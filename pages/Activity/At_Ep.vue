@@ -11,6 +11,7 @@
 <script>
 
 export default {
+  layout: 'Aftermain',
   data () {
     return {
       title: 'เสริมสมรรถนะ'
