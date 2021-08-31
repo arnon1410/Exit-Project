@@ -12,7 +12,7 @@
       width="260"
       class=" teal darken-2"
     >
-     <v-list >
+    <v-list >
       <v-list-item to='/Dashboard'>
         <v-list-item-icon>
           <v-icon>mdi-home</v-icon>
@@ -48,7 +48,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
-      </v-list>
+    </v-list>
       <template v-slot:append>
       <div class="pa-5" >
         <v-btn
@@ -65,14 +65,11 @@
         </v-btn>
         </div>
       </template>
-    </v-list>
-
     </v-navigation-drawer>
 
 
 <!--appbar-->
     <v-app-bar
-    
       class=" teal darken-2"
       :clipped-left="clipped"
       fixed
@@ -96,22 +93,23 @@
       </v-list-item>
       <v-spacer />
 
-      <v-menu offset-y origin="center center" :nudge-right="140" :nudge-bottom="10" transition="scale-transition">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        v-bind="attrs"
-        icon
-        v-on="on"
-        
-      >
-        <v-icon>mdi-account</v-icon>
-      </v-btn>
-    </template>
+      <v-menu bottom min-width="200px" rounded offset-y>
+        <template #activator="{ on }">
+          <v-btn icon x-large v-on="on">
+            <v-avatar size="48">
+              <img
+                src="https://images.news18.com/ibnlive/uploads/2021/07/1627371749_jungkook.jpg"
+                alt="๋JK"
+              />
+            </v-avatar>
+          </v-btn>
+        </template>
 
     <v-list>
       <v-list-item
         v-for="(item, index) in items2"
         :key="index"
+        :to="item.to"
         @click="handleClick(index)"
       >
         <v-list-item-icon>
@@ -157,7 +155,7 @@ export default {
       title1: 'Kasetsart University',
       items: [
         {
-          icon: 'mdi-tools',
+          icon: 'mdi mdi-book-open-variant',
           color: '',
           items: [
             { title: 'ตรวจสอบผลการเรียน',icon: 'mdi-tools', to: '/Course/Check_course'},
@@ -166,27 +164,27 @@ export default {
           title: 'หลักสูตร',
         },
         {
-          icon: 'mdi-tools',
+          icon: 'mdi-calendar-clock',
           color: '',
           items: [
             { title: 'กิจกรรมมหาวิทยาลัย',icon: 'mdi-tools', to: '/Activity/At_Ku'},
-            { title: 'เสริมสมรรถนะ',icon: 'mdi-tools', to: '/Activity/At_Ep'},
-            { title: 'เพื่อสังคม',icon: 'mdi-tools', to: '/Activity/At_Fs'},
             { title: 'สรุปผล',icon: 'mdi-tools', to: '/Activity/Sum_At'},
           ],
           title: 'ชั่วโมงกิจกรรม',
         },
         {
-          icon: 'mdi-tools',
+          icon: 'mdi-book-multiple',
           color: '',
           items: [
+            { title: 'หลักสูตร ปี 2556', icon: 'mdi-tools', to: '' },
+            { title: 'หลักสูตร ปี 2560', icon: 'mdi-tools', to: '' },
             { title: 'ใบเสร็จรับเงิน(KU2)', to: ''},
             { title: 'KU3 Online', to: ''},
           ],
           title: 'เอกสารหลักสูตร',
         },
         {
-          icon: 'mdi-tools',
+          icon: 'mdi-web',
           color: '',
           items: [
             { title: 'ระบบสารสนเทศ', to: ''},
@@ -195,22 +193,25 @@ export default {
             { title: 'ตรวจสอบห้องสอบ', to: ''},
           ],
           title: 'อื่่น ๆ',
-        },      
+        },
       ],
 
       items2: [
-      { 
-        title: 'Profile', 
-        icon: 'mdi-account',
-      },
-      { 
-        title: 'Settings',
-        icon: 'mdi-calendar',
-      },
-      { 
-        title: 'Logout',
-        icon: 'mdi-delete',
-      }
+      {
+          icon: 'mdi-account',
+          title: 'Profile',
+          to: '/Profile/Profile'
+        },
+        {
+          title: 'Settings',
+          icon: 'mdi-calendar',
+          to: '/Profile/Setting'
+        },
+        {
+          title: 'Logout',
+          icon: 'mdi-delete',
+          to: '/Profile/Logout'
+        }
     ],
   }
     },
