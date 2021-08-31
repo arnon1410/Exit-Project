@@ -1,21 +1,266 @@
-  <template>
-  <v-layout row class="align-center layout px-4 pt-4 app--page-header">
-    <div class="page-header-left">
-      <h3 class="pr-3">{{title}}</h3>
-    </div>
-  </v-layout> 
-  <!--เพิ่ม-->
-   
+<template>
+  <div>
+    <v-row class="align-center layout px-4 pt-4 app--page-header">
+      <div class="page-header-center">
+        <h3 class="pr-3">หลักสูตรวิศวกรรมศาสตร์บัญทิต สาขาวิศวกรรมคอมพิวเตอร์ ระดับปริญญาตรี</h3>
+      </div>
+    </v-row>
+    <v-row>
+    <v-col>
+      <v-expansion-panels >
+          <v-expansion-panel>
+            <v-expansion-panel-header class="teal darken-2">หมวดหมวดวิชาเฉพาะ ไม่น้อยกว่า 111 หน่วยกิต</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-col>
+              <v-simple-table>
+                <thead>
+                  <tr class="teal darken-2">
+                    <th class="text-center">
+                      ลำดับที่
+                    </th>
+                    <th class="text-center">
+                      รหัสวิชา
+                    </th>
+                    <th class="text-center">
+                      ชื่อวิชา
+                    </th>
+                    <th class="text-center">
+                      หน่วยกิต
+                    </th>
+                    <th class="text-center">
+                      ผลการเรียน
+                    </th>
+                    <th class="text-center">
+                      ระดับคะแนน
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+              </v-col>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+
+          <v-expansion-panel>
+            <v-expansion-panel-header class="teal darken-2" >หมวดศึกษาทั่วไป ไม่น้อยกว่า 30 หน่วยกิต</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-col>
+              <v-simple-table>
+                <thead>
+                  <tr class="teal darken-2">
+                    <th class="text-center">
+                      ลำดับที่
+                    </th>
+                    <th class="text-center">
+                      รหัสวิชา
+                    </th>
+                    <th class="text-center">
+                      ชื่อวิชา
+                    </th>
+                    <th class="text-center">
+                      หน่วยกิต
+                    </th>
+                    <th class="text-center">
+                      ผลการเรียน
+                    </th>
+                    <th class="text-center">
+                      ระดับคะแนน
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in tuat"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+              </v-col>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+
+          <v-expansion-panel>
+            <v-expansion-panel-header class="teal darken-2">หมวดวิชาเลือกเสรี ไม่น้อยกว่า 6 หน่วยกิต</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-col>
+              <v-simple-table>
+                <thead>
+                  <tr class="teal darken-2">
+                    <th class="text-center">
+                      ลำดับที่
+                    </th>
+                    <th class="text-center">
+                      รหัสวิชา
+                    </th>
+                    <th class="text-center">
+                      ชื่อวิชา
+                    </th>
+                    <th class="text-center">
+                      หน่วยกิต
+                    </th>
+                    <th class="text-center">
+                      ผลการเรียน
+                    </th>
+                    <th class="text-center">
+                      ระดับคะแนน
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in free"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+              </v-col>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+      </v-expansion-panels>
+    </v-col>
+    </v-row>
+    <v-list-item-content>
+    <v-row>
+      <v-col>
+            <v-list-item-title class="text-right " >
+              <strong class="mx-10 py-3">จำนวนหน่วยกิตสะสม : </strong>
+              <strong class="mx-10 py-3">147 </strong>
+              <!--เพิ่มโค้ดรับค่า-->
+              <strong class="mx-10 py-3">หน่วยกิต </strong>
+            </v-list-item-title>
+      </v-col>
+    </v-row>
+    </v-list-item-content>
+     <v-list-item-content>
+    <v-row>
+      <v-col>
+            <v-list-item-title class="text-right " >
+              <strong class="mx-10 py-3">จำนวนหน่วยกิตคงเหลือ : </strong>
+              <strong class="mx-10 py-3">0 </strong>
+              <!--เพิ่มโค้ดรับค่า-->
+              <strong class="mx-10 py-3">หน่วยกิต </strong>
+            </v-list-item-title>
+      </v-col>
+    </v-row>
+    </v-list-item-content>
+     <v-list-item-content>
+    <v-row>
+      <v-col>
+            <v-list-item-title class="text-right " >
+                <strong class="mx-10 py-3">รวมเกรดเฉลี่ยสะสม : </strong>
+                <strong class="mx-10 py-3">4.00 </strong>
+                <!--เพิ่มโค้ดรับค่า-->
+            </v-list-item-title>
+      </v-col>
+    </v-row>
+    </v-list-item-content>
+  </div>
 </template>
 
 <script>
 
 export default {
   layout: 'Aftermain',
-  data () {
-    return {
-      title: 'ผลการเรียนนิสิต'
-    };
-  },
+   data: () => ({
+     desserts: [
+      {
+        num: '1',
+        code: '0120XXXX',
+        name: 'ระบบฐานข้อมูล',
+        credit: '3',
+        grade: 'A',
+        count_g: '4.00',
+      },
+      {
+        num: '2',
+        code: '',
+        name: '',
+        credit: '3',
+        grade: 'A',
+        count_g: '4.00',
+      },
+            {
+        num: '3',
+        code: '',
+        name: '',
+        credit: '3',
+        grade: 'A',
+        count_g: '4.00',
+      },
+     ],
+     tuat: [
+      {
+        num: '1',
+        code: '0120XXXX',
+        name: 'กิจกรรมพละศึกษา',
+        credit: '3',
+        grade: 'A',
+        count_g: '4.00',
+      },
+      {
+        num: '2',
+        code: '',
+        name: '',
+        credit: '3',
+        grade: 'A',
+        count_g: '4.00',
+      },
+            {
+        num: '3',
+        code: '',
+        name: '',
+        credit: '3',
+        grade: 'A',
+        count_g: '4.00',
+      },
+     ],
+     free: [
+      {
+        num: '1',
+        code: '0120XXXX',
+        name: '',
+        credit: '3',
+        grade: 'A',
+        count_g: '4.00',
+      },
+      {
+        num: '2',
+        code: '',
+        name: '',
+        credit: '3',
+        grade: 'A',
+        count_g: '4.00',
+      },
+     ],
+  }),
   }
 </script>
