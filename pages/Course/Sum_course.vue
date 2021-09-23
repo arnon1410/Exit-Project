@@ -14,7 +14,7 @@
               <v-col>
               <v-simple-table>
                 <thead>
-                  <tr class="teal darken-2">
+                  <tr class="teal darken-3">
                     <th class="text-center">
                       ลำดับที่
                     </th>
@@ -35,6 +35,10 @@
                     </th>
                   </tr>
                 </thead>
+              </v-simple-table>
+              <v-list-item-title class="px-4 teal darken-2" >วิชาเฉพาะด้าน 55 หน่วยกิต</v-list-item-title>
+              <v-list-item-title class="px-4 teal darken-1" >กลุ่มเพื่องานประยุกต์ 3 หน่วยกิต</v-list-item-title>
+              <v-simple-table>
                 <tbody>
                   <tr
                     v-for="item in desserts"
@@ -50,6 +54,126 @@
                   </tr>
                 </tbody>
               </v-simple-table>
+               <v-list-item-title class="px-4 teal darken-1" >กลุ่มเทคโนโลยีและวิธีทางซอฟต์แวร์ 10 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
+                <v-list-item-title class="px-4 teal darken-1" >กลุ่มโครงสร้างพื้นฐานของระบบ 14 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
+                <v-list-item-title class="px-4 teal darken-1" >กลุ่มฮาร์ดแวร์และสถาปัตยกรรมคอมพิวเตอร์ 20 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
+                <v-list-item-title class="px-4 teal darken-1" >กลุ่มทักษะวิชาชีพและจรรยาบรรณ 8 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
+                 <v-list-item-title class="px-4 teal darken-2" >วิชาแกน 40 หน่วยกิต</v-list-item-title>
+              <v-list-item-title class="px-4 teal darken-1" >วิชาแกนทางวิทยาศาสตร์และคณิตศาสตร์ 21 หน่วยกิต</v-list-item-title>
+              <v-simple-table>
+                <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+               <v-list-item-title class="px-4 teal darken-1" >วิชาแกนทางวิศวกรรม 19 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
+                <v-list-item-title class="px-4 teal darken-2" >วิชาเฉพาะเลือก 16 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
               </v-col>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -81,9 +205,12 @@
                     </th>
                   </tr>
                 </thead>
+              </v-simple-table>
+              <v-list-item-title class="px-4 teal darken-1" >กลุ่มสาระอยู่ดีมีสุข 6 หน่วยกิต</v-list-item-title>
+              <v-simple-table>
                 <tbody>
                   <tr
-                    v-for="item in tuat"
+                    v-for="item in desserts"
                     :key="item.name"
                     class="text-center"
                   >
@@ -96,6 +223,74 @@
                   </tr>
                 </tbody>
               </v-simple-table>
+               <v-list-item-title class="px-4 teal darken-1" >กลุ่มสาระศาสตร์แห่งผู้ประกอบการ 3 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
+                <v-list-item-title class="px-4 teal darken-1" >กลุ่มสาระภาษากับการสื่อสาร 13 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
+                <v-list-item-title class="px-4 teal darken-1" >กลุ่มสาระพลเมืองไทยและพลเมืองโลก 5 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
+                <v-list-item-title class="px-4 teal darken-1" >กลุ่มสาระสุนทรียศาสตร์ 3 หน่วยกิต</v-list-item-title>
+                <v-simple-table>
+                  <tbody>
+                  <tr
+                    v-for="item in desserts"
+                    :key="item.name"
+                    class="text-center"
+                  >
+                    <td>{{ item.num }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.credit }}</td>
+                    <td>{{ item.grade }}</td>
+                    <td>{{ item.count_g }}</td>
+                  </tr>
+                </tbody>
+                </v-simple-table>
               </v-col>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -199,23 +394,7 @@ export default {
         credit: '3',
         grade: 'A',
         count_g: '4.00',
-      },
-      {
-        num: '2',
-        code: '',
-        name: '',
-        credit: '3',
-        grade: 'A',
-        count_g: '4.00',
-      },
-            {
-        num: '3',
-        code: '',
-        name: '',
-        credit: '3',
-        grade: 'A',
-        count_g: '4.00',
-      },
+      }
      ],
      tuat: [
       {
@@ -225,23 +404,7 @@ export default {
         credit: '3',
         grade: 'A',
         count_g: '4.00',
-      },
-      {
-        num: '2',
-        code: '',
-        name: '',
-        credit: '3',
-        grade: 'A',
-        count_g: '4.00',
-      },
-            {
-        num: '3',
-        code: '',
-        name: '',
-        credit: '3',
-        grade: 'A',
-        count_g: '4.00',
-      },
+      }
      ],
      free: [
       {

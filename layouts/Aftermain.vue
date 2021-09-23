@@ -145,8 +145,7 @@
 
 <script>
 export default {
-  data () {
-    return {
+  data: () => ({
       flat: false,
       clipped: true,
       drawer: true,
@@ -176,10 +175,10 @@ export default {
           icon: 'mdi-book-multiple',
           color: '',
           items: [
-            { title: 'หลักสูตร ปี 2556', icon: 'mdi-tools', to: '' },
-            { title: 'หลักสูตร ปี 2560', icon: 'mdi-tools', to: '' },
-            { title: 'ใบเสร็จรับเงิน(KU2)', to: ''},
-            { title: 'KU3 Online', to: ''},
+            { title: 'หลักสูตร ปี 2556', icon: 'mdi-tools', link: 'https://web.facebook.com/groups/nisitkuse' },
+            { title: 'หลักสูตร ปี 2560', icon: 'mdi-tools', link: 'https://web.facebook.com/groups/nisitkuse' },
+            { title: 'ใบเสร็จรับเงิน(KU2)', link: 'https://web.facebook.com/groups/nisitkuse'},
+            { title: 'KU3 Online', link: 'https://web.facebook.com/groups/nisitkuse'},
           ],
           title: 'เอกสารหลักสูตร',
         },
@@ -187,12 +186,12 @@ export default {
           icon: 'mdi-web',
           color: '',
           items: [
-            { title: 'ระบบสารสนเทศ', to: ''},
-            { title: 'เพิ่ม-ถอนรายวิชา(KU4)', to: ''},
-            { title: 'นิสิตที่ลงทะเบียน(KU8)', to: ''},
-            { title: 'ตรวจสอบห้องสอบ', to: ''},
+            { title: 'ระบบสารสนเทศ', link: 'https://web.facebook.com/groups/nisitkuse'},
+            { title: 'เพิ่ม-ถอนรายวิชา(KU4)', link: 'https://web.facebook.com/groups/nisitkuse'},
+            { title: 'นิสิตที่ลงทะเบียน(KU8)', link: 'https://web.facebook.com/groups/nisitkuse'},
+            { title: 'ตรวจสอบห้องสอบ', link: 'https://web.facebook.com/groups/nisitkuse'},
           ],
-          title: 'อื่่น ๆ',
+          title: 'อื่น ๆ',
         },
       ],
 
@@ -209,12 +208,12 @@ export default {
         },
         {
           title: 'Logout',
-          icon: 'mdi-delete',
+          icon: 'mdi-logout-variant',
           to: '/Profile/Logout'
         }
     ],
-  }
-    },
+  }),
+
    methods: {
     handleClick(index) {
       this.items2[index].click.call(this)
