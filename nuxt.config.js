@@ -50,10 +50,17 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
+    '@nuxtjs/auth'
   ],
+  auth: {
+    // Options
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:3001/'
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -93,5 +100,26 @@ export default {
       fix: true
     }
     
+  },
+  server: {
+    port: 8000
+  },
+  auth: {
+    redirect: {
+      login: 'landing'
+    },
+
+    strategies: {
+      local: {
+ 
+        endpoints: {
+          login: { url: '/auth/login', method: 'post'},
+          logout: false,
+          user: { url: '/auth/user', method: 'get'}
+        },
+        // tokenRequired: true,
+        tokenName: 'auth-token'
+      }
+    }
   }
 }

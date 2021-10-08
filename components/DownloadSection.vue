@@ -11,30 +11,31 @@
                   <v-card color="#385F73" width="500" class="elevation-4 text-left" dark >
                     <v-card-title class="text-h5-center">Sign in</v-card-title>
                     <v-card-text>
-                      <v-form>
+                      <v-form ref="form" lazy-validation>
                         <v-text-field 
-                          v-model="email" 
+                          v-model="loginInfo.UserName" 
                           dark 
-                          label="Email" 
-                          outlined type="text">
+                          label="Username" 
+                          outlined type="text" @keydown.enter="loginUser">
                         </v-text-field>
                         <v-text-field
+                          v-model="loginInfo.Password" 
                           outlined
                           label="password" 
                           :type="show ?'text': 
                           'password'"
                           :append-icon="show ?'mdi-eye':'mdi-eye-off'"   
-                          @click:append="show=!show">
+                          @click:append="show=!show" @keydown.enter="loginUser">
                         </v-text-field> 
-                      </v-form>
+                      </v-form >
                     </v-card-text>
                     <v-card-actions class="text-center">
                       <v-btn rounded outlined dark color="green" depressed large @click="$vuetify.goTo('#contact')"> forget password </v-btn> 
                       <v-spacer />
-                      <v-btn rounded dark color="primary" class="login-button"  depressed large @click="signin" > Sign In </v-btn>
+                      <v-btn rounded dark color="primary" class="login-button"  depressed large  @click="loginUser">Sign in</v-btn>
                     </v-card-actions>
                   </v-card>
-
+                
             </v-col>
           </v-row>
         </v-col>
@@ -47,27 +48,50 @@ export default {
   data() {
     return {
       show:false,
-      email: "",
-      password: ""
-    }
+      vaild: false,
+      loginInfo: {
+        UserName: "",
+        Password: "",
+      },
+      }
   },
-    methods: {
-    signin() {
-      const UserData = {
-        email: this.email,
-        password: this.password
-      };
-      this.submitToServer(UserData);
-      this.$router.push('/dashboard');
+  
+  computed: {
+    loggedIn() {
+      return this.$auth.isLoggedIn;
+      },
     },
-    submitToServer(data){
-      console.log(data);
+    created() {
+      if (this.loggedIn) {
+        this.$router.push("Dashboard");
+      }
+  },
+  methods: {
+    async loginUser() {
+      if (!this.$refs.form.validate()) return;
+      
+      await this.$auth.loginWith('local', {data: this.loginInfo}).then(
+        (res) => {
+
+          this.$router.push('Dashboard');
+        },
+        (error) => {
+     
+        if (error.message === 'Network Error')
+              this.$alert.showMessage({
+              content: 'Network Error',
+              type: "error"
+            });
+          else
+            this.$alert.showMessage({
+              content: 'คุณป้อนข้อมูลไม่ถูกต้อง',
+              type: "error"
+            });
+        }
+      );
     },
   }
-
-
-  
-     }
+}
 </script>
 <style scoped>
 #download {

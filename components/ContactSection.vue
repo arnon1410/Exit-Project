@@ -25,7 +25,7 @@
                     <v-card-actions class="text-center">
 
                       <v-spacer />
-                      <v-btn rounded dark color="primary" class="login-button" depressed large @click="signin" > Send </v-btn>
+                      <v-btn rounded dark color="primary" class="login-button" depressed large  > Send </v-btn>
                     </v-card-actions>
                   </v-card>
 
@@ -63,7 +63,7 @@ export default {
     snackbar: {
       enabled: false,
       text: '',
-      color: ''
+      
     }
   }),
 };

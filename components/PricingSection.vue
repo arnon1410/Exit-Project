@@ -7,41 +7,97 @@
             <h2 class="text-center pt-6 font-weight-light display-1">Sign Up</h2>
             <v-divider class="my-6"></v-divider>
                     <v-card-text>
-               <v-form ref="registerForm" v-model="valid" lazy-validation>
+               <v-form ref="form" lazy-validation>
                   <v-row>
                       <v-col cols="12" sm="6" md="6">
-                          <v-text-field v-model="idstudent" :rules="[rules.required]" label="Student ID" maxlength="20" outlined required></v-text-field>
+                        <v-text-field 
+                          v-model="registrationinfo.StudentID" 
+                          :rules="[rules.required]" 
+                          label="Student ID" 
+                          maxlength="10" 
+                          outlined 
+                          required 
+                          @keydown.enter="registaionUser">
+                        </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                          <v-text-field v-model="Name" :rules="[rules.required]" label="Name" maxlength="20" outlined required></v-text-field>
+                        <v-text-field 
+                          v-model="registrationinfo.Name" 
+                          :rules="[rules.required]" 
+                          label="Name" 
+                          maxlength="20" 
+                          outlined 
+                          required 
+                          @keydown.enter="registaionUser">
+                        </v-text-field>
                       </v-col>
                       <v-col cols="12">
-                          <v-text-field v-model="email" :rules="emailRules" label="E-mail" outlined required></v-text-field>
+                        <v-text-field 
+                        v-model="registrationinfo.Email" 
+                        :rules="emailRules" 
+                        label="E-mail" 
+                        outlined required 
+                        @keydown.enter="registaionUser">
+                      </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                          <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters" counter outlined @click:append="show1 = !show1" ></v-text-field>
+                        <v-text-field 
+                          v-model="registrationinfo.UserName"  
+                          :rules="[rules.required]" 
+                          label="Username" 
+                          outlined 
+                          required 
+                          @keydown.enter="registaionUser">
+                        </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                          <v-text-field v-model="verify" block  :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, passwordMatch]" :type="show2 ? 'text' : 'password'" name="input-10-1" label="Confirm Password" counter outlined @click:append="show2 = !show2" ></v-text-field>
+                        <v-text-field 
+                          v-model="registrationinfo.Password" 
+                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
+                          :rules="[rules.required, rules.min]" 
+                          :type="show1 ? 'text' : 'password'" 
+                          name="input-10-1" 
+                          label="Password" 
+                          hint="At least 8 characters" 
+                          counter 
+                          outlined 
+                          @click:append="show1 = !show1" 
+                          @keydown.enter="registaionUser"></v-text-field>
+                      </v-col>
+
+                      <v-col cols="12" sm="6" md="6">
+                        <v-text-field 
+                          v-model="registrationinfo.Faculty" 
+                          :rules="[rules.required]" 
+                          label="Faculty" 
+                          maxlength="20" 
+                          outlined 
+                          required 
+                          @keydown.enter="registaionUser">
+                        </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                          <v-text-field v-model="Faculty" :rules="[rules.required]" label="Faculty" maxlength="20" outlined required></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="6">
-                          <v-text-field v-model="Major" :rules="[rules.required]" label="Major" maxlength="20" outlined required></v-text-field>
+                        <v-text-field 
+                          v-model="registrationinfo.Major" 
+                          :rules="[rules.required]" 
+                          label="Major" 
+                          maxlength="20" 
+                          outlined 
+                          required 
+                          @keydown.enter="registaionUser">
+                        </v-text-field>
                       </v-col>
                       <v-spacer></v-spacer>
                         <!--<v-col class="d-flex ml-auto" cols="6" sm="3" xsm="6">
                            <v-btn x-large block :disabled="!valid" color="success" @click="validate">Register</v-btn>
                       </v-col>-->
-              
                       </v-row>
                   </v-form>
               </v-card-text>
               <v-card-actions class="text-center">
                       <v-btn rounded outlined dark color="green"  depressed large> forget password </v-btn> 
                       <v-spacer />
-                      <v-btn rounded dark color="primary" class="login-button" depressed large @click="signin" > Sign Up </v-btn>
+                      <v-btn rounded dark color="primary" class="login-button" depressed large  @click="registaionUser">Sign up</v-btn>
                     </v-card-actions>
           </v-card>
         </v-col>
@@ -73,41 +129,64 @@
 </template>
 
 <script>
-  export default {
-data: () => ({
-    dialog: true,
-    tab: 0,
-    tabs: [
-        {name:"Login", icon:"mdi-account"},
-        {name:"Register", icon:"mdi-account-outline"}
-    ],
-    valid: true,
-    
-    idstudent: "",
-    Name: "",
-    email: "",
-    password: "",
-    verify: "",
-    Faculty:"วิทยาศาสตร์และวิศวกรรมศาสตร์",
-    Major:"วิศวกรรมคอมพิวเตอร์",
-    loginPassword: "",
-    loginEmail: "",
-    loginEmailRules: [
-      v => !!v || "Required",
-      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-    ],
-    emailRules: [
-      v => !!v || "Required",
-      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-    ],
+export default {
+  
+  data: () => ({
+      loading: false,
+      dialog: true,
+      tab: 0,
+      tabs: [
+          {name:"Login", icon:"mdi-account"},
+          {name:"Register", icon:"mdi-account-outline"}
+      ],
+      valid: false,
+      registrationinfo:{
+        StudentID: "",
+        Name: "",
+        Email: "",
+        UserName: "",
+        Password: "",
+        Faculty:"",
+        Major:"",
+        IsActive:true,
+        CreateBy:"",
+        UpdateBy:"",
+        UserRole:""
+      },
+      verify: "",
+      loginPassword: "",
+      loginEmail: "",
+      loginEmailRules: [
+        v => !!v || "Required",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+      ],
+      emailRules: [
+        v => !!v || "Required",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+      ],
 
-    show1: false,
-    show2: false,
-    rules: {
-      required: value => !!value || "Required.",
-      min: v => (v && v.length >= 8) || "Min 8 characters"
+      show1: false,
+      
+      rules: {
+        required: value => !!value || "Required.",
+        min: v => (v && v.length >= 8) || "Min 8 characters"
+      }
+      
+      
+  }),
+  methods: {
+    async registaionUser() {
+      if (!this.$refs.form.validate()) return;
+        try {
+          await this.$axios.post('/users', this.registrationinfo)
+          
+          await this.$axios.patch(`/users/${this.registrationinfo.StudentID}`, this.registrationinfo)
+          this.$router.push('/')
+        } catch {
+          this.$store.dispatch('snackbar/setSnackbar', {color: 'red', text: 'There was an issue signing up.  Please try again.'})
+        }
     }
-  })
+  }
 }
 </script>
 

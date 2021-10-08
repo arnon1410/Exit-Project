@@ -38,7 +38,7 @@ export default {
     fab: null,
     color: "",
     flat: null,
-  }),
+  }),  
   watch: {
     fab(value) {
       if (value) {
@@ -48,10 +48,9 @@ export default {
         this.color = "transparent";
         this.flat = true;
       }
-    },
-  },
-
-};
+    }
+  }
+}
 </script>
 
 <style scoped>

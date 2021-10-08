@@ -9,7 +9,7 @@
               <h1 class="font-weight-light display-1 mb-3">Course
               </h1>
                   <v-card
-                      :color="color"
+                
                       class="mx-auto"
                       max-width="650"
                     >
@@ -60,16 +60,7 @@
 <script>
 export default {
     layout: "NotLogin",
-    props: {
-    color:{
-      type:String,
-      required:true
-    },
-    flat: {
-      type:Boolean,
-      required:true
-    }  
-  },
+
  data () {
     return {
       items: [

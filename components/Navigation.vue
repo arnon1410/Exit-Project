@@ -47,7 +47,7 @@
       color="#006664"
       dark
       class="px-15"
-      :class="{ expand: flat }"
+
       
     >
       <v-toolbar-title>
@@ -89,16 +89,6 @@
 
 <script>
 export default {
-      props: {
-    color:{
-      type:String,
-      required:true
-    },
-    flat: {
-      type:Boolean,
-      required:true
-    }  
-  },
   data: () => ({
     title: "Kasetsart University",
     drawer: null,
