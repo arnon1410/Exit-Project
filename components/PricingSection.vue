@@ -151,7 +151,6 @@ export default {
         IsActive:true,
         CreateBy:"",
         UpdateBy:"",
-        UserRole:""
       },
       verify: "",
       loginPassword: "",
@@ -178,10 +177,10 @@ export default {
     async registaionUser() {
       if (!this.$refs.form.validate()) return;
         try {
+
           await this.$axios.post('/users', this.registrationinfo)
-          
-          await this.$axios.patch(`/users/${this.registrationinfo.StudentID}`, this.registrationinfo)
           this.$router.push('/')
+
         } catch {
           this.$store.dispatch('snackbar/setSnackbar', {color: 'red', text: 'There was an issue signing up.  Please try again.'})
         }

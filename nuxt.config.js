@@ -51,7 +51,6 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
-    '@nuxtjs/auth'
   ],
   auth: {
     // Options
@@ -114,8 +113,9 @@ export default {
  
         endpoints: {
           login: { url: '/auth/login', method: 'post'},
-          logout: false,
+          logout: { url: 'users/logout', method: 'post'},
           user: { url: '/auth/user', method: 'get'}
+          
         },
         // tokenRequired: true,
         tokenName: 'auth-token'

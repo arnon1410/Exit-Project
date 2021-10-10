@@ -58,6 +58,8 @@
           <v-icon
             left
             dark
+            
+
           >
             mdi-logout-variant
           </v-icon>
@@ -146,6 +148,7 @@
 <script>
 export default {
   data: () => ({
+
       flat: false,
       clipped: true,
       drawer: true,
@@ -217,7 +220,11 @@ export default {
    methods: {
     handleClick(index) {
       this.items2[index].click.call(this)
-    }
-  },
+    },
+    //async logout() {
+      ///await this.$auth.logout();
+      //this.$router.push('/landing');
+    //}
+  }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
-  <v-form>
+<div v-if="loggedIn">
+  <v-form >
     <v-container>
         <v-row class="mb-6" justify="space-around">
           <v-avatar size="78">
@@ -10,45 +11,62 @@
     </v-avatar>
       </v-row>
       <v-container style="max-width">
+  
         <v-row justify="center">
           <v-col cols="5" md="3">
+          
             <v-text-field
+              v-model="user.UserName" 
               label="Username"
               placeholder="Username"
             ></v-text-field>
           </v-col>
 
           <v-col cols="5" md="3">
-            <v-text-field label="ID" placeholder="ID"></v-text-field>
+            <v-text-field 
+              v-model="user.StudentID" 
+              label="StudentID" 
+              placeholder="StudentID"
+              >{{user.StudentID}}</v-text-field>
           </v-col>
         </v-row>
       </v-container>
       <v-row justify="center">
         <v-col cols="12" sm="6" md="6">
           <v-text-field
-            label="Email address"
-            placeholder="Email address"
-          ></v-text-field>
+            v-model="user.Email" 
+            label="" 
+            placeholder="Email"
+          >{{user.Email}}</v-text-field>
         </v-col>
       </v-row>
       <v-row justify="center">
         <v-col cols="12" sm="6" md="6">
-          <v-text-field label="Faculty" placeholder="Faculty"></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
-        <v-col cols="12" sm="6" md="6">
-          <v-text-field label="Major" placeholder="Major"></v-text-field>
+          <v-text-field 
+            v-model="user.Faculty" 
+            label="Faculty" 
+            placeholder="Faculty"
+          >{{user.Faculty}}</v-text-field>
         </v-col>
       </v-row>
       <v-row justify="center">
         <v-col cols="12" sm="6" md="6">
           <v-text-field
-            v-model="model"
+            v-model="user.Faculty"  
+            label="Major" 
+            placeholder="Major"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col cols="12" sm="6" md="6">
+          <v-text-field
+            v-model="user.Password"
             :hint="
               !isEditing ? 'Click the icon to edit' : 'Click the icon to save'
             "
             label="Password"
+            type="password"
             persistent-hint
           >
             <template #append-outer>
@@ -73,9 +91,11 @@
             <v-btn color="error">ยกเลิก</v-btn>
           </v-col>
         </v-row>
+        
       </v-container>
     </v-container>
   </v-form>
+  </div>
 </template>
 
 <script>
@@ -83,8 +103,35 @@ export default {
   layout: 'Aftermain',
   data() {
     return {
+      user: this.$auth.user,
+      loggedIn: this.$auth.loggedIn,
+
       isEditing: false,
-      model: null
+      userprofile:{
+        StudentID: "",
+        Name: "",
+        Email: "",
+        UserName: "",
+        Password: "",
+        Faculty:"",
+        Major:"",
+        IsActive:true,
+        CreateBy:"",
+        UpdateBy:"",
+      },
+    }
+  },
+  methods: {
+    async registaionUser() {
+      if (!this.$refs.form.validate()) return;
+        try {
+
+          await this.$axios.post('/users', this.registrationinfo)
+          this.$router.push('/')
+
+        } catch {
+          this.$store.dispatch('snackbar/setSnackbar', {color: 'red', text: 'There was an issue signing up.  Please try again.'})
+        }
     }
   }
 }
