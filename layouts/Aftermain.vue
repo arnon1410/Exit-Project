@@ -54,6 +54,7 @@
         <v-btn
          block
          color="error"
+         @click="Logout"
         >
           <v-icon
             left
@@ -221,10 +222,9 @@ export default {
     handleClick(index) {
       this.items2[index].click.call(this)
     },
-    //async logout() {
-      ///await this.$auth.logout();
-      //this.$router.push('/landing');
-    //}
+     async Logout() {
+      await this.$auth.logout()
+      }
   }
 }
 </script>

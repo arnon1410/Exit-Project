@@ -14,20 +14,22 @@
   
         <v-row justify="center">
           <v-col cols="5" md="3">
-          
-            <v-text-field
-              v-model="user.UserName" 
-              label="Username"
-              placeholder="Username"
-            ></v-text-field>
-          </v-col>
-
-          <v-col cols="5" md="3">
             <v-text-field 
               v-model="user.StudentID" 
               label="StudentID" 
               placeholder="StudentID"
-              >{{user.StudentID}}</v-text-field>
+              @keydown.enter="UpdateUser">
+              ></v-text-field>
+
+          </v-col>
+
+          <v-col cols="5" md="3">
+            <v-text-field
+              v-model="user.UserName" 
+              label="Username"
+              placeholder="Username"
+              @keydown.enter="UpdateUser"> 
+            ></v-text-field>
           </v-col>
         </v-row>
       </v-container>
@@ -35,9 +37,10 @@
         <v-col cols="12" sm="6" md="6">
           <v-text-field
             v-model="user.Email" 
-            label="" 
+            label="Email" 
             placeholder="Email"
-          >{{user.Email}}</v-text-field>
+             @keydown.enter="UpdateUser">
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row justify="center">
@@ -46,7 +49,8 @@
             v-model="user.Faculty" 
             label="Faculty" 
             placeholder="Faculty"
-          >{{user.Faculty}}</v-text-field>
+             @keydown.enter="UpdateUser">
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row justify="center">
@@ -55,6 +59,7 @@
             v-model="user.Faculty"  
             label="Major" 
             placeholder="Major"
+             @keydown.enter="UpdateUser">
           ></v-text-field>
         </v-col>
       </v-row>
@@ -62,32 +67,17 @@
         <v-col cols="12" sm="6" md="6">
           <v-text-field
             v-model="user.Password"
-            :hint="
-              !isEditing ? 'Click the icon to edit' : 'Click the icon to save'
-            "
             label="Password"
             type="password"
             persistent-hint
-          >
-            <template #append-outer>
-              <v-slide-x-reverse-transition mode="out-in">
-                <v-icon
-                  :key="`icon-${isEditing}`"
-                  :color="isEditing ? 'success' : 'info'"
-                  @click="isEditing = !isEditing"
-                  v-text="
-                    isEditing ? 'mdi-check-outline' : 'mdi-circle-edit-outline'
-                  "
-                ></v-icon>
-              </v-slide-x-reverse-transition>
-            </template>
-          </v-text-field>
+             @keydown.enter="UpdateUser">
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-container fluid class="text-center">
         <v-row class="flex" justify="space-between">
           <v-col cols="12">
-            <v-btn color="teal darken-2" dark>บันทึก</v-btn>
+            <v-btn color="teal darken-2" dark  @click="UpdateUser">บันทึก</v-btn>
             <v-btn color="error">ยกเลิก</v-btn>
           </v-col>
         </v-row>
@@ -105,8 +95,6 @@ export default {
     return {
       user: this.$auth.user,
       loggedIn: this.$auth.loggedIn,
-
-      isEditing: false,
       userprofile:{
         StudentID: "",
         Name: "",
@@ -122,11 +110,11 @@ export default {
     }
   },
   methods: {
-    async registaionUser() {
+    async UpdateUser() {
       if (!this.$refs.form.validate()) return;
         try {
 
-          await this.$axios.post('/users', this.registrationinfo)
+          await this.$axios.$patch(`/users/${this.$auth.user.StudentID}`, this.$auth.user)
           this.$router.push('/')
 
         } catch {
@@ -134,5 +122,6 @@ export default {
         }
     }
   }
+
 }
 </script>
