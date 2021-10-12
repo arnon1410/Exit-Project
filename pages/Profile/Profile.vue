@@ -46,7 +46,7 @@
       <v-row justify="center">
         <v-col cols="12" sm="6" md="6">
           <v-text-field 
-            v-model="user.Faculty" 
+            v-model="user.Faculty"
             label="Faculty" 
             placeholder="Faculty"
              @keydown.enter="UpdateUser">
@@ -56,7 +56,7 @@
       <v-row justify="center">
         <v-col cols="12" sm="6" md="6">
           <v-text-field
-            v-model="user.Faculty"  
+            v-model="user.Major"  
             label="Major" 
             placeholder="Major"
              @keydown.enter="UpdateUser">
@@ -77,7 +77,7 @@
       <v-container fluid class="text-center">
         <v-row class="flex" justify="space-between">
           <v-col cols="12">
-            <v-btn color="teal darken-2" dark  @click="UpdateUser">บันทึก</v-btn>
+            <v-btn color="teal darken-2" dark >บันทึก</v-btn>
             <v-btn color="error">ยกเลิก</v-btn>
           </v-col>
         </v-row>
@@ -109,19 +109,6 @@ export default {
       },
     }
   },
-  methods: {
-    async UpdateUser() {
-      if (!this.$refs.form.validate()) return;
-        try {
-
-          await this.$axios.$patch(`/users/${this.$auth.user.StudentID}`, this.$auth.user)
-          this.$router.push('/')
-
-        } catch {
-          this.$store.dispatch('snackbar/setSnackbar', {color: 'red', text: 'There was an issue signing up.  Please try again.'})
-        }
-    }
-  }
-
+  
 }
 </script>

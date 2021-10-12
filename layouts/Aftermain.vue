@@ -213,7 +213,7 @@ export default {
         {
           title: 'Logout',
           icon: 'mdi-logout-variant',
-          to: '/Profile/Logout'
+          to: '/landing'
         }
     ],
   }),
@@ -224,6 +224,7 @@ export default {
     },
      async Logout() {
       await this.$auth.logout()
+      this.$router.push('/landing')
       }
   }
 }
