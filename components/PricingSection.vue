@@ -10,80 +10,80 @@
                <v-form ref="form" lazy-validation>
                   <v-row>
                       <v-col cols="12" sm="6" md="6">
-                        <v-text-field 
-                          v-model="registrationinfo.StudentID" 
-                          :rules="[rules.required]" 
-                          label="Student ID" 
-                          maxlength="10" 
-                          outlined 
-                          required 
+                        <v-text-field
+                          v-model="registrationinfo.StudentID"
+                          :rules="[rules.required]"
+                          label="Student ID"
+                          maxlength="10"
+                          outlined
+                          required
                           @keydown.enter="registaionUser">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                        <v-text-field 
-                          v-model="registrationinfo.Name" 
-                          :rules="[rules.required]" 
-                          label="Name" 
-                          maxlength="20" 
-                          outlined 
-                          required 
+                        <v-text-field
+                          v-model="registrationinfo.Name"
+                          :rules="[rules.required]"
+                          label="Name"
+                          maxlength="20"
+                          outlined
+                          required
                           @keydown.enter="registaionUser">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12">
-                        <v-text-field 
-                        v-model="registrationinfo.Email" 
-                        :rules="emailRules" 
-                        label="E-mail" 
-                        outlined required 
+                        <v-text-field
+                        v-model="registrationinfo.Email"
+                        :rules="emailRules"
+                        label="E-mail"
+                        outlined required
                         @keydown.enter="registaionUser">
                       </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                        <v-text-field 
-                          v-model="registrationinfo.UserName"  
-                          :rules="[rules.required]" 
-                          label="Username" 
-                          outlined 
-                          required 
+                        <v-text-field
+                          v-model="registrationinfo.UserName"
+                          :rules="[rules.required]"
+                          label="Username"
+                          outlined
+                          required
                           @keydown.enter="registaionUser">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                        <v-text-field 
-                          v-model="registrationinfo.Password" 
-                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" 
-                          :rules="[rules.required, rules.min]" 
-                          :type="show1 ? 'text' : 'password'" 
-                          name="input-10-1" 
-                          label="Password" 
-                          hint="At least 8 characters" 
-                          counter 
-                          outlined 
-                          @click:append="show1 = !show1" 
+                        <v-text-field
+                          v-model="registrationinfo.Password"
+                          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                          :rules="[rules.required, rules.min]"
+                          :type="show1 ? 'text' : 'password'"
+                          name="input-10-1"
+                          label="Password"
+                          hint="At least 8 characters"
+                          counter
+                          outlined
+                          @click:append="show1 = !show1"
                           @keydown.enter="registaionUser"></v-text-field>
                       </v-col>
 
                       <v-col cols="12" sm="6" md="6">
-                        <v-text-field 
-                          v-model="registrationinfo.Faculty" 
-                          :rules="[rules.required]" 
-                          label="Faculty" 
-                          maxlength="20" 
-                          outlined 
-                          required 
+                        <v-text-field
+                          v-model="registrationinfo.Faculty"
+                          :rules="[rules.required]"
+                          label="Faculty"
+                          maxlength="20"
+                          outlined
+                          required
                           @keydown.enter="registaionUser">
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                        <v-text-field 
-                          v-model="registrationinfo.Major" 
-                          :rules="[rules.required]" 
-                          label="Major" 
-                          maxlength="20" 
-                          outlined 
-                          required 
+                        <v-text-field
+                          v-model="registrationinfo.Major"
+                          :rules="[rules.required]"
+                          label="Major"
+                          maxlength="20"
+                          outlined
+                          required
                           @keydown.enter="registaionUser">
                         </v-text-field>
                       </v-col>
@@ -95,7 +95,7 @@
                   </v-form>
               </v-card-text>
               <v-card-actions class="text-center">
-                      <v-btn rounded outlined dark color="green"  depressed large> forget password </v-btn> 
+                      <v-btn rounded outlined dark color="green"  depressed large> forget password </v-btn>
                       <v-spacer />
                       <v-btn rounded dark color="primary" class="login-button" depressed large  @click="registaionUser">Sign up</v-btn>
                     </v-card-actions>
@@ -130,7 +130,7 @@
 
 <script>
 export default {
-  
+
   data: () => ({
       loading: false,
       dialog: true,
@@ -146,8 +146,8 @@ export default {
         Email: "",
         UserName: "",
         Password: "",
-        Faculty:"",
-        Major:"",
+        Faculty:"Science and Engineering",
+        Major:"Computer Engineering",
         IsActive:true,
         CreateBy:"",
         UpdateBy:"",
@@ -165,13 +165,13 @@ export default {
       ],
 
       show1: false,
-      
+
       rules: {
         required: value => !!value || "Required.",
         min: v => (v && v.length >= 8) || "Min 8 characters"
       }
-      
-      
+
+
   }),
   methods: {
     async registaionUser() {
