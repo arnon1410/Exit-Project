@@ -151,7 +151,7 @@ export default {
         IsActive:true,
         CreateBy:"",
         UpdateBy:"",
-        UserRole:"",
+        UserRole:"User",
       },
       verify: "",
       loginPassword: "",
