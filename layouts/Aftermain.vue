@@ -238,7 +238,7 @@ export default {
           icon: 'mdi mdi-book-open-variant',
           color: '',
           items: [
-            { title: 'Manage Course',icon: 'mdi-tools', to: '/Admin/CourseAdmin'},
+            { title: 'Manage Course',icon: 'mdi-tools', to: '/Admin/ManageSubject'},
             { title: 'Manage Users',icon: 'mdi-tools', to: '/Admin/ManageUser'},
           ],
           title: 'For Admin',

@@ -1,130 +1,8 @@
-/* eslint-disable no-dupe-keys */
-<!--template>
-  <div>
-     <v-simple-table>
-    <thead>
-      <tr class="teal darken-2">
-        <th class="text-center">
-          ประเภทกิจกรรม
-        </th>
-        <th class="text-center">
-          ชื่อกิจกรมม
-        </th>
-        <th class="text-center">
-          จำนวนโครงการ
-        </th>
-        <th class="text-center">
-          จำนวนคณะทำงาน
-        </th>
-        <th class="text-center">
-          จำนวนกิจกรรม
-        </th>
-        <th class="text-center">
-          จำนวนหน่วยชั่วโมง
-        </th>
-      </tr>
-    </thead>
-      <tbody>
-        <tr
-          v-for="item in desserts"
-          :key="item.name"
-          class="text-center"
-        >
-          <td>{{ item.type_ac }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.count_pro }}</td>
-          <td>{{ item.count_pp }}</td>
-          <td>{{ item.count_ac }}</td>
-          <td>{{ item.count_time }}</td>
-        </tr>
-      </tbody>
-    </v-simple-table>
-    <v-list-item-content>
-    <v-row>
-      <v-col>
-            <v-list-item-title class="text-right " >
-                <strong class="mx-10 py-3">จำนวนกิจกรรมรวม : </strong>
-            </v-list-item-title>
-      </v-col>
-    </v-row>
-    </v-list-item-content>
-
-</div>
-</!--template-->
-
-<!--script>
-
-export default {
-   data: () => ({
-     desserts: [
-      {
-        type_ac: 'กิจกรรมมหาวิทยาลัย',
-        name: 'XXXXXXXX',
-        count_pro: '9',
-        count_pp: '0',
-        count_ac: '6(>=9)',
-        count_time: '105',
-      },
-      {
-       type_ac: 'กิจกรรมเพื่อสังคม',
-        name: 'XXXXXXXX',
-        count_pro: '3',
-        count_pp: '0',
-        count_ac: '6(>=3)',
-        count_time: '35',
-      },
-     ],
-    }),
-  }
-</!--script-->
-<!--template>
-<div>
-    <div class="search-wrapper">
-       <label>
-            <input v-model="subjects" type="text" placeholder="Search title.."/>
-            Search hier:
-        </label>
-    </div>
-    <div class="wrapper">
-        <li v-for="SubjectNameTH in subjects " :key="SubjectNameTH">
-            {{ name }}
-        </li>
-    </div>
-</div>
-</+template>
-
-<script>
-
-export default {
-    data() {
-        return {
-            search: '',
-            subjects: [],
-        }
-    },
-
-watch: {
-  created() {
-    this.loadGrid()
-  },
-},
-methods: {
-  async loadGrid() {
-      try {
-        this.subjects = await this.$axios.$get('/subject' + this.search )
-        .then((response) => {this.subjects = response.data})
-      } catch (error) {
-        console.error(error)
-      }
-    },
-}
-}
-</!--script-->
 <template>
   <v-row align="center" class="list px-3 mx-auto">
     <v-col cols="12" sm="12">
       <v-card class="mx-auto" tile>
-        <v-card-title>รายวิชา</v-card-title>
+        <v-card-title>จัดการยูเซอร์</v-card-title>
         <v-data-table
           :headers="headers"
           :items="items"
@@ -160,35 +38,30 @@ methods: {
                         <v-row>
                           <v-col cols="12" sm="6" md="8">
                             <v-text-field
-                              v-model="editedItem.SubjectID"
+                              v-model="editedItem.StudentID"
                               :rules="[rules.required]"
-                              label="รหัสวิชา"
+                              label="รหัสนิสิต"
                               type="text"
                             ></v-text-field>
                             <v-text-field
-                              v-model="editedItem.SubjectNameTH"
+                              v-model="editedItem.Name"
                               :rules="[rules.required]"
-                              label="ชื่อวิชาภาษาไทย"
+                              label="ชื่อ"
                               type="text"
                             ></v-text-field>
                             <v-text-field
-                              v-model="editedItem.SubjectNameEN"
+                              v-model="editedItem.Email"
                               :rules="[rules.required]"
-                              label="ชื่อวิชาภาษาอังกฤษ"
+                              label="Email"
                               type="text"
                             ></v-text-field>
                             <v-text-field
-                              v-model="editedItem.groupsub"
+                              v-model="editedItem.UserName"
                               :rules="[rules.required]"
-                              label="กลุ่มสาระฯ"
+                              label="UserName"
                               type="text"
                             ></v-text-field>
-                            <v-text-field
-                              v-model="editedItem.Credit"
-                              :rules="[rules.required]"
-                              label="หน่วยกิต"
-                              type="text"
-                            ></v-text-field>
+
                           </v-col>
                         </v-row>
                       </v-container>
@@ -228,9 +101,6 @@ methods: {
             </v-toolbar>
           </template>
           <template #[`item.actions`]="{ item }">
-            <v-icon color="orange" medium class="mr-2" @click="editItem(item)">
-              mdi-pencil
-            </v-icon>
             <v-icon color="red" medium @click="deleteItem(item)">
               mdi-delete
             </v-icon>
@@ -249,47 +119,44 @@ export default {
     dialogDelete: false,
     search: '',
     headers: [
+
       {
-        text: 'ลำดับ',
+        text: 'รหัสนิสิต',
         align: 'start',
-        sortable: false,
-        value: '',
-        class: 'tblHeader',
-      },
-      {
-        text: 'รหัสวิชา',
-        value: 'SubjectID',
+        value: 'StudentID',
         sortable: false,
         class: 'tblHeader',
       },
-      { text: 'ชื่อวิชาภาษาไทย', value: 'SubjectNameTH', class: 'tblHeader' },
+      { 
+        text: 'ชื่อ', 
+        value: 'Name', 
+        class: 'tblHeader' },
       {
-        text: 'ชื่อวิชาภาษาอังกฤษ',
-        value: 'SubjectNameEN',
+        text: 'Email',
+        value: 'Email',
         class: 'tblHeader',
       },
-      { text: 'กลุ่มสาระฯ', value: 'groupsub', class: 'tblHeader' },
-      { text: 'หน่วยกิต', value: 'Credit', class: 'tblHeader' },
-      { text: '', value: 'actions', sortable: false, class: 'tblHeader' },
+      { 
+        text: 'UserName', 
+        value: 'UserName', 
+        class: 'tblHeader' },
+
+      { text: 'Action', value: 'actions', sortable: false, class: 'tblHeader' },
     ],
     items: [],
     editedIndex: -1,
     editedItem: {
-      SubjectID: '',
-      SubjectNameTH: '',
-      SubjectNameEN: '',
-      // groupsub: '',
-      groupsub: {SubjectID: '', NameGroup: ''},
-      Credit: '',
+      StudentID: '',
+      Name: '',
+      Email: '',
+      UserName: '',
       IsActive: '',
     },
     defaultItem: {
-      SubjectID: '',
-      SubjectNameTH: '',
-      SubjectNameEN: '',
-      // groupsub: '',
-      groupsub: {SubjectID: '', NameGroup: ''},
-      Credit: '',
+      StudentID: '',
+      Name: '',
+      Email: '',
+      UserName: '',
       IsActive: '',
     },
     updatesub: [],
@@ -320,8 +187,8 @@ export default {
     async loadGrid() {
       try {
         // console.log('hel')
-        this.items = await this.$axios.$get('/subject')
-        this.items.forEach(x => {x.groupsub = x.groupsub.NameGroup;});
+        this.items = await this.$axios.$get('/users/')
+        // this.items.forEach(x => {x.groupsub = x.groupsub.NameGroup;});
         console.log(this.items)
         // console.log('helo')
         // this.NameGp = await this.$axios.$get('/groupsub')
@@ -385,7 +252,7 @@ export default {
           )
         } else {
           this.editedItem.groupsub.NameGroup = this.groupsub
-          this.editedItem.CreateBy = this.editedItem.UpdateBy = 'admin'
+          this.editedItem.CreateBy = this.editedItem.UpdateBy = 'Admin'
           await this.$axios.$post(`/subject`, this.editedItem)
           // this.items.push(this.editedItem);
         }
