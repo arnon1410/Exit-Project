@@ -156,7 +156,28 @@ export default {
       fixed: false,
       miniVariant: false,
       title1: 'Kasetsart University',
-      items: [
+      items: [],
+      items2: [
+      {
+          icon: 'mdi-account',
+          title: 'Profile',
+          to: '/Profile/Profile'
+        },
+        {
+          title: 'Settings',
+          icon: 'mdi-calendar',
+          to: '/Profile/Setting'
+        },
+        {
+          title: 'Logout',
+          icon: 'mdi-logout-variant',
+          to: '/landing'
+        }
+    ],
+  }),
+    created() {
+    if (this.$auth.user.UserRole === 'User')
+     this.items = [
         {
           icon: 'mdi mdi-book-open-variant',
           color: '',
@@ -197,27 +218,20 @@ export default {
           ],
           title: 'อื่น ๆ',
         },
-      ],
-
-      items2: [
-      {
-          icon: 'mdi-account',
-          title: 'Profile',
-          to: '/Profile/Profile'
-        },
+      ]
+      else this.items = [
         {
-          title: 'Settings',
-          icon: 'mdi-calendar',
-          to: '/Profile/Setting'
-        },
-        {
-          title: 'Logout',
-          icon: 'mdi-logout-variant',
-          to: '/landing'
+          icon: 'mdi mdi-book-open-variant',
+          color: '',
+          items: [
+            { title: 'Admin',icon: 'mdi-tools', to: '/Course/Check_course'},
+            { title: 'Admin',icon: 'mdi-tools', to: '/Course/Sum_course'},
+          ],
+          title: 'For Admin',
         }
-    ],
-  }),
+      ]
 
+  },
    methods: {
     handleClick(index) {
       this.items2[index].click.call(this)

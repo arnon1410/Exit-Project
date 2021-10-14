@@ -72,7 +72,7 @@ export default {
       
       await this.$auth.loginWith('local', {data: this.loginInfo}).then(
         (res) => {
-
+        
           this.$router.push('Dashboard');
         },
         (error) => {
