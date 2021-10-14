@@ -95,7 +95,6 @@
                   </v-form>
               </v-card-text>
               <v-card-actions class="text-center">
-                      <v-btn rounded outlined dark color="green"  depressed large> forget password </v-btn>
                       <v-spacer />
                       <v-btn rounded dark color="primary" class="login-button" depressed large  @click="registaionUser">Sign up</v-btn>
                     </v-card-actions>

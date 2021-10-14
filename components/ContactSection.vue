@@ -13,10 +13,10 @@
                         <v-card-subtitle class="text-center justify-center"> Enter the email associated with your account and we'll send an email with instructions to reset your password </v-card-subtitle>
                     <v-card-text>
                       <v-form>
-                        <v-text-field 
-                         v-model="email" 
+                        <v-text-field
+                         v-model="email"
                           dark
-                          label="Email" 
+                          label="Email"
                           outlined type="text">
                         </v-text-field>
 
@@ -25,7 +25,7 @@
                     <v-card-actions class="text-center">
 
                       <v-spacer />
-                      <v-btn rounded dark color="primary" class="login-button" depressed large  > Send </v-btn>
+                      <v-btn rounded dark color="primary" class="login-button" depressed large @click="forget"  > Send </v-btn>
                     </v-card-actions>
                   </v-card>
 
@@ -63,9 +63,22 @@ export default {
     snackbar: {
       enabled: false,
       text: '',
-      
+
     }
   }),
+  methods: {
+    forget() {
+      const UserData = {
+        email: this.email,
+      };
+      this.submitToServer(UserData);
+      this.$router.push('/Forget');
+    },
+    submitToServer(data){
+      console.log(data);
+    },
+
+  }
 };
 </script>
 
