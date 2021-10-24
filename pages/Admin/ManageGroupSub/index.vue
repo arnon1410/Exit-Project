@@ -38,35 +38,21 @@
                         <v-row>
                           <v-col cols="12" sm="6" md="8">
                             <v-text-field
-                              v-model="editedItem.SubjectID"
+                              v-model="editedItem.GroupID"
                               :rules="[rules.required]"
-                              label="รหัสวิชา"
+                              label="รหัสกลุ่มสาระฯ"
                               type="text"
                               @keydown.enter="save"
                             ></v-text-field>
                             <v-text-field
-                              v-model="editedItem.SubjectNameTH"
+                              v-model="editedItem.NameGroup"
                               :rules="[rules.required]"
-                              label="ชื่อวิชาภาษาไทย"
+                              label="ชื่อกลุ่มสาระฯ"
                               type="text"
                               @keydown.enter="save"
                             ></v-text-field>
                             <v-text-field
-                              v-model="editedItem.SubjectNameEN"
-                              :rules="[rules.required]"
-                              label="ชื่อวิชาภาษาอังกฤษ"
-                              type="text"
-                              @keydown.enter="save"
-                            ></v-text-field>
-                            <v-text-field
-                              v-model="editedItem.groupsub"
-                              :rules="[rules.required]"
-                              label="กลุ่มสาระฯ"
-                              type="text"
-                              @keydown.enter="save"
-                            ></v-text-field>
-                            <v-text-field
-                              v-model="editedItem.Credit"
+                              v-model="editedItem.TotalCredit"
                               :rules="[rules.required]"
                               label="หน่วยกิต"
                               type="text"
@@ -140,44 +126,36 @@ export default {
         class: 'tblHeader',
       },
       {
-        text: 'รหัสวิชา',
-        value: 'SubjectID',
+        text: 'รหัสกลุ่มสาระฯ',
+        value: 'GroupID',
         sortable: false,
         class: 'tblHeader',
       },
-      { text: 'ชื่อวิชาภาษาไทย', value: 'SubjectNameTH', class: 'tblHeader' },
-      {
-        text: 'ชื่อวิชาภาษาอังกฤษ',
-        value: 'SubjectNameEN',
-        class: 'tblHeader',
-      },
-      { text: 'กลุ่มสาระฯ', value: 'groupsub', class: 'tblHeader' },
-      { text: 'หน่วยกิต', value: 'Credit', class: 'tblHeader' },
+      { text: 'ชื่อกลุ่มสาระฯ', 
+      value: 'NameGroup', 
+      class: 'tblHeader' },
+
+      { text: 'หน่วยกิต', 
+      value: 'TotalCredit', 
+      class: 'tblHeader' },
       { text: '', value: 'actions', sortable: false, class: 'tblHeader' },
     ],
     items: [],
     editedIndex: -1,
     editedItem: {
-      SubjectID: '',
-      SubjectNameTH: '',
-      SubjectNameEN: '',
-      groupsub: 
-        { 
-          GroupID: ''
-        },
-      Credit: '',
-      IsActive: '',
+      GroupID: '',
+      NameGroup: '',
+      TotalCredit: '',
+      CreateBy:"Admin",
+      UpdateBy:"",
+
     },
     defaultItem: {
-      SubjectID: '',
-      SubjectNameTH: '',
-      SubjectNameEN: '',
-      groupsub: 
-        { 
-          GroupID: ''
-        },
-      Credit: '',
-      IsActive: '',
+      GroupID: '',
+      NameGroup: '',
+      TotalCredit: '',
+      CreateBy:"Admin",
+      UpdateBy:"",
     },
     updatesub: [],
     rules: {
@@ -207,8 +185,7 @@ export default {
     async loadGrid() {
       try {
         // console.log('hel')
-        this.items = await this.$axios.$get('/subject')
-        this.items.forEach(x => {x.groupsub = x.groupsub.NameGroup;});
+        this.items = await this.$axios.$get('/groupsub')
         console.log(this.items)
         // console.log('helo')
         // this.NameGp = await this.$axios.$get('/groupsub')
@@ -261,13 +238,12 @@ export default {
 
           this.editedItem.UpdateBy = 'x';
           await this.$axios.$patch(
-            `/subject/${this.editedItem.SubjectID}`,
+            `/groupsub/${this.editedItem.GroupID}`,
             this.editedItem
           )
-        } else {
-          this.editedItem.groupsub.GroupID = this.groupsub
-          this.editedItem.CreateBy = this.editedItem.UpdateBy = 'x'
-          await this.$axios.$post(`/subject`, this.editedItem)
+        } 
+        else {
+          await this.$axios.$post(`/groupsub`, this.editedItem)
           // this.items.push(this.editedItem);
         }
         this.$alert.showMessage({
@@ -281,6 +257,7 @@ export default {
       }
     },
 
+    
     resetForm() {
       this.$refs.form.reset()
     },

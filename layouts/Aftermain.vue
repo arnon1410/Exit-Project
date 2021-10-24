@@ -238,6 +238,7 @@ export default {
           icon: 'mdi mdi-book-open-variant',
           color: '',
           items: [
+            { title: 'Manage GroupSubject',icon: 'mdi-tools', to: '/Admin/ManageGroupSub'},
             { title: 'Manage Course',icon: 'mdi-tools', to: '/Admin/ManageSubject'},
             { title: 'Manage Users',icon: 'mdi-tools', to: '/Admin/ManageUser'},
           ],
