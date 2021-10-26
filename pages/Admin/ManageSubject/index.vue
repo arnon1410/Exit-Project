@@ -22,12 +22,78 @@
                 hide-details
               ></v-text-field>
               <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" width="600px">
+
+              
+            <v-dialog v-model="dialog2" width="600px">
                 <template #activator="{ on, attrs }">
                   <v-btn color="primary" class="mx-3" v-bind="attrs" v-on="on">
                     เพิ่ม
                   </v-btn>
                 </template>
+                <v-form ref="form" lazy-validation>
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">Add data</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="8">
+                            <v-text-field
+                              v-model="AddItem.SubjectID"
+                              :rules="[rules.required]"
+                              label="รหัสวิชา"
+                              type="text"
+                              @keydown.enter="savedata"
+                            ></v-text-field>
+                            <v-text-field
+                              v-model="AddItem.SubjectNameTH"
+                              :rules="[rules.required]"
+                              label="ชื่อวิชาภาษาไทย"
+                              type="text"
+                              @keydown.enter="savedata"
+                            ></v-text-field>
+                            <v-text-field
+                              v-model="AddItem.SubjectNameEN"
+                              :rules="[rules.required]"
+                              label="ชื่อวิชาภาษาอังกฤษ"
+                              type="text"
+                              @keydown.enter="savedata"
+                            ></v-text-field>
+                            <v-text-field
+                              v-model="AddItem.groupsub.GroupID"
+                              :rules="[rules.required]"
+                              label="กลุ่มสาระฯ"
+                              type="text"
+                              @keydown.enter="savedata"
+                            ></v-text-field>
+                            <v-text-field
+                              v-model="AddItem.Credit"
+                              :rules="[rules.required]"
+                              label="หน่วยกิต"
+                              type="text"
+                              @keydown.enter="savedata"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="red darken-1" text @click="close">
+                        Cancel
+                      </v-btn>
+                      <v-btn color="blue darken-1" text @click="savedata">
+                        Save
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-form>
+              </v-dialog>
+              
+              <v-dialog v-model="dialog" width="600px">
+
                 <v-form ref="form" lazy-validation>
                   <v-card>
                     <v-card-title>
@@ -129,6 +195,7 @@ export default {
   layout: 'Aftermain',
   data: () => ({
     dialog: false,
+    dialog2: false,
     dialogDelete: false,
     search: '',
     headers: [
@@ -157,6 +224,21 @@ export default {
     ],
     items: [],
     editedIndex: -1,
+
+    AddItem: {
+      SubjectID: '',
+      SubjectNameTH: '',
+      SubjectNameEN: '',
+      CreateBy:"Admin",
+      UpdateBy:"",
+      groupsub: 
+        { 
+          GroupID: ''
+        },
+      Credit: '',
+      IsActive: '',
+    },
+
     editedItem: {
       SubjectID: '',
       SubjectNameTH: '',
@@ -208,7 +290,7 @@ export default {
       try {
         // console.log('hel')
         this.items = await this.$axios.$get('/subject')
-        this.items.forEach(x => {x.groupsub = x.groupsub.NameGroup;});
+        this.items.forEach(x => {x.groupsub = x.groupsub.GroupID;});
         console.log(this.items)
         // console.log('helo')
         // this.NameGp = await this.$axios.$get('/groupsub')
@@ -265,8 +347,8 @@ export default {
             this.editedItem
           )
         } else {
-          this.editedItem.groupsub.GroupID = this.groupsub
-          this.editedItem.CreateBy = this.editedItem.UpdateBy = 'x'
+         //  this.editedItem.groupsub = this.editedItem.groupsub.GroupID
+         // this.editedItem.CreateBy = this.editedItem.UpdateBy = 'x'
           await this.$axios.$post(`/subject`, this.editedItem)
           // this.items.push(this.editedItem);
         }
@@ -279,6 +361,16 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+        async savedata() {
+      if (!this.$refs.form.validate()) return;
+        try {
+          await this.$axios.post('/subject', this.AddItem)
+          this.$router.push('/Admin/ManageSubject')
+
+        } catch {
+          this.$store.dispatch('snackbar/setSnackbar', {color: 'red', text: 'There was an issue signing up.  Please try again.'})
+        }
     },
 
     resetForm() {
