@@ -4,6 +4,7 @@
       <v-card class="mx-auto" tile>
         <v-card-title>กลุ่มสาระฯ</v-card-title>
         <v-data-table
+          v-model="selected"
           :headers="headers"
           :items="items"
           :search="search"
@@ -116,6 +117,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    dialogConfirm: false,
     search: '',
     headers: [
       {
@@ -141,6 +143,8 @@ export default {
       { text: '', value: 'actions', sortable: false, class: 'tblHeader' },
     ],
     items: [],
+    selected: [],
+    SelectedText: "",
     editedIndex: -1,
     editedItem: {
       GroupID: '',
@@ -185,7 +189,7 @@ export default {
     async loadGrid() {
       try {
         // console.log('hel')
-        this.items = await this.$axios.$get('/groupsub')
+        this.items = await this.$axios.$get('/groupsub');
         console.log(this.items)
         // console.log('helo')
         // this.NameGp = await this.$axios.$get('/groupsub')
@@ -209,18 +213,19 @@ export default {
       this.dialogDelete = true
     },
 
-    deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
 
     close() {
       this.dialog = false
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-      this.resetForm()
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    closeConfirm() {
+      this.dialog = false;
+      this.selected = [];
+      this.SelectedText = "";
+      
     },
 
     closeDelete() {
@@ -240,26 +245,39 @@ export default {
           await this.$axios.$patch(
             `/groupsub/${this.editedItem.GroupID}`,
             this.editedItem
-          )
+          );
+            this.loadGrid();
+            this.close();
+            this.$alert.showMessage({
+              content: "บันทึกข้อมูลเรียบร้อย",
+              type: "success"
+            });
         } 
         else {
           await this.$axios.$post(`/groupsub`, this.editedItem)
-          // this.items.push(this.editedItem);
-        }
-        this.$alert.showMessage({
-          content: 'บันทึกข้อมูลเรียบร้อย',
-          type: 'success',
-        })
-        this.loadGrid()
-        this.close()
+          };
+            this.loadGrid();
+            this.closeConfirm();
+            this.$alert.showMessage({
+              content: 'บันทึกข้อมูลเรียบร้อย',
+              type: 'success',
+            });
       } catch (error) {
         console.error(error)
       }
     },
+    async deleteItemConfirm() {
+      try {
+        await this.$axios.$delete(`/groupsub/${this.editedItem.GroupID}`);
+        this.loadGrid();
+        this.closeDelete();
+        this.$alert.showMessage({
+          content: "บันทึกข้อมูลเรียบร้อย",
+          type: "success"
+        });
 
-    
-    resetForm() {
-      this.$refs.form.reset()
+      } catch (error) {
+      }
     },
   },
 }

@@ -4,6 +4,7 @@
       <v-card class="mx-auto" tile>
         <v-card-title>รายวิชา</v-card-title>
         <v-data-table
+          v-model="selected"
           :headers="headers"
           :items="items"
           :search="search"
@@ -81,7 +82,7 @@
 
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="red darken-1" text @click="close">
+                      <v-btn color="red darken-1" text @click="close2">
                         Cancel
                       </v-btn>
                       <v-btn color="blue darken-1" text @click="savedata">
@@ -288,12 +289,10 @@ export default {
   methods: {
     async loadGrid() {
       try {
-        // console.log('hel')
         this.items = await this.$axios.$get('/subject')
         this.items.forEach(x => {x.groupsub = x.groupsub.GroupID;});
         console.log(this.items)
-        // console.log('helo')
-        // this.NameGp = await this.$axios.$get('/groupsub')
+      
       } catch (error) {
         console.error(error)
       }
@@ -314,18 +313,32 @@ export default {
       this.dialogDelete = true
     },
 
-    deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
-
     close() {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
-      })
-      this.resetForm()
+      });
+    },
+
+    close2() {
+      this.dialog2 = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeConfirm() {
+      this.dialog = false;
+      this.selected = [];
+      this.SelectedText = "";
+    },
+
+    closeConfirm2() {
+      this.dialog2 = false;
+      this.selected = [];
+      this.SelectedText = "";
     },
 
     closeDelete() {
@@ -345,19 +358,23 @@ export default {
           await this.$axios.$patch(
             `/subject/${this.editedItem.SubjectID}`,
             this.editedItem
-          )
-        } else {
-         //  this.editedItem.groupsub = this.editedItem.groupsub.GroupID
-         // this.editedItem.CreateBy = this.editedItem.UpdateBy = 'x'
+        );
+            this.loadGrid();
+            this.close();
+            this.$alert.showMessage({
+              content: "บันทึกข้อมูลเรียบร้อย",
+              type: "success"
+            });
+        } 
+        else {
           await this.$axios.$post(`/subject`, this.editedItem)
-          // this.items.push(this.editedItem);
-        }
-        this.$alert.showMessage({
-          content: 'บันทึกข้อมูลเรียบร้อย',
-          type: 'success',
-        })
-        this.loadGrid()
-        this.close()
+          };
+            this.loadGrid();
+            this.closeConfirm2();
+            this.$alert.showMessage({
+              content: 'บันทึกข้อมูลเรียบร้อย',
+              type: 'success',
+            });
       } catch (error) {
         console.error(error)
       }
@@ -366,15 +383,29 @@ export default {
       if (!this.$refs.form.validate()) return;
         try {
           await this.$axios.post('/subject', this.AddItem)
-          this.$router.push('/Admin/ManageSubject')
-
-        } catch {
-          this.$store.dispatch('snackbar/setSnackbar', {color: 'red', text: 'There was an issue signing up.  Please try again.'})
+            this.loadGrid();
+            this.closeConfirm2();
+            this.$alert.showMessage({
+              content: 'บันทึกข้อมูลเรียบร้อย',
+              type: 'success',
+            });
+      } catch (error) {
+        console.error(error)
         }
     },
 
-    resetForm() {
-      this.$refs.form.reset()
+    async deleteItemConfirm() {
+      try {
+        await this.$axios.$delete(`/subject/${this.editedItem.SubjectID}`);
+        this.loadGrid();
+        this.closeDelete();
+        this.$alert.showMessage({
+          content: "บันทึกข้อมูลเรียบร้อย",
+          type: "success"
+        });
+
+      } catch (error) {
+      }
     },
   },
 }

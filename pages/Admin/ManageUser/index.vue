@@ -4,6 +4,7 @@
       <v-card class="mx-auto" tile>
         <v-card-title>จัดการยูเซอร์</v-card-title>
         <v-data-table
+          v-model="selected"
           :headers="headers"
           :items="items"
           :search="search"
@@ -23,11 +24,7 @@
               ></v-text-field>
               <v-spacer></v-spacer>
               <v-dialog v-model="dialog" width="600px">
-                <template #activator="{ on, attrs }">
-                  <v-btn color="primary" class="mx-3" v-bind="attrs" v-on="on">
-                    เพิ่ม
-                  </v-btn>
-                </template>
+
                 <v-form ref="form" lazy-validation>
                   <v-card>
                     <v-card-title>
@@ -121,7 +118,7 @@ export default {
     headers: [
 
       {
-        text: 'รหัสนิสิต',
+        text: 'ID',
         align: 'start',
         value: 'StudentID',
         sortable: false,
@@ -144,6 +141,8 @@ export default {
       { text: 'Action', value: 'actions', sortable: false, class: 'tblHeader' },
     ],
     items: [],
+    selected: [],
+    SelectedText: "",
     editedIndex: -1,
     editedItem: {
       StudentID: '',
@@ -186,12 +185,8 @@ export default {
   methods: {
     async loadGrid() {
       try {
-        // console.log('hel')
         this.items = await this.$axios.$get('/users/')
-        // this.items.forEach(x => {x.groupsub = x.groupsub.NameGroup;});
         console.log(this.items)
-        // console.log('helo')
-        // this.NameGp = await this.$axios.$get('/groupsub')
       } catch (error) {
         console.error(error)
       }
@@ -212,18 +207,19 @@ export default {
       this.dialogDelete = true
     },
 
-    deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
 
     close() {
       this.dialog = false
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-      this.resetForm()
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    closeConfirm() {
+      this.dialog = false;
+      this.selected = [];
+      this.SelectedText = "";
+      
     },
 
     closeDelete() {
@@ -238,55 +234,44 @@ export default {
       try {
         if (!this.$refs.form.validate()) return
         if (this.editedIndex > -1) {
-          /* const data = [];
-          this.groupsub.forEach(x => {
-            const item = {};
-            item.SubjectID = this.editedItem.SubjectID;
-            item.groupsub = this.
-            data.push(item);
-          }); */
+
           this.editedItem.UpdateBy = 'x';
           await this.$axios.$patch(
-            `/subject/${this.editedItem.SubjectID}`,
+            `/users/${this.editedItem.StudentID}`,
             this.editedItem
-          )
-        } else {
-          this.editedItem.groupsub.NameGroup = this.groupsub
-          this.editedItem.CreateBy = this.editedItem.UpdateBy = 'Admin'
-          await this.$axios.$post(`/subject`, this.editedItem)
-          // this.items.push(this.editedItem);
-        }
-        this.$alert.showMessage({
-          content: 'บันทึกข้อมูลเรียบร้อย',
-          type: 'success',
-        })
-        this.loadGrid()
-        this.close()
+          );
+            this.loadGrid();
+            this.close();
+            this.$alert.showMessage({
+              content: "บันทึกข้อมูลเรียบร้อย",
+              type: "success"
+            });
+        } 
+        else {
+          await this.$axios.$post(`/users`, this.editedItem)
+          };
+            this.loadGrid();
+            this.closeConfirm();
+            this.$alert.showMessage({
+              content: 'บันทึกข้อมูลเรียบร้อย',
+              type: 'success',
+            });
       } catch (error) {
         console.error(error)
       }
     },
-
-    /* async deleteItemConfirm() {
+    async deleteItemConfirm() {
       try {
-        // ลบข้อมูลใน items
-        // this.items.splice(this.editedIndex, 1);
-        // ลบข้อมูลผ่าน API
-        await this.$axios.$delete(`/subject/${this.editedItem.SubjectID}`);
-
+        await this.$axios.$delete(`/users/${this.editedItem.StudentID}`);
+        this.loadGrid();
+        this.closeDelete();
         this.$alert.showMessage({
           content: "บันทึกข้อมูลเรียบร้อย",
           type: "success"
         });
 
-        this.loadGrid();
-        this.closeDelete();
       } catch (error) {
-        console.error(error);
       }
-    }, */
-    resetForm() {
-      this.$refs.form.reset()
     },
   },
 }
