@@ -5,7 +5,7 @@
       :headers="headers"
       :items="items"
       :item-class="itemRowBackground"
-      item-key="SubjectID"
+      item-key="GradeID"
       class="elevation-3"
       sort-by=""
     >
@@ -13,7 +13,9 @@
         <v-toolbar flat>
           <v-autocomplete
             v-model="editedItem.Year"
-            :items="year"
+            :items="Years"
+            item-text="text"
+            item-value="value"
             label="ปีการศึกษา"
             class="pa-2"
             single-line
@@ -21,7 +23,7 @@
           ></v-autocomplete>
           <v-spacer></v-spacer>
           <v-autocomplete
-            v-model="editedItem.StudenttermID"
+            v-model="editedItem.Term"
             :items="term"
             label="เทอม"
             class="pa-2"
@@ -31,7 +33,9 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" width="600px">
             <template #activator="{ on, attrs }">
-              <v-btn color="primary" class="mx-3" v-bind="attrs" v-on="on">
+              <v-btn color="primary" class="mx-3" v-bind="attrs" 
+                :disabled="editedItem.Year === '' || editedItem.Term === ''"
+                v-on="on">
                 เพิ่ม
               </v-btn>
             </template>
@@ -43,46 +47,43 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <v-col cols="12" sm="6" md="4">
+                      <v-col cols="12">
                         <v-autocomplete
-                          v-model="editedItem.subjectid"
+                          v-model="editedItem.SubjectID"
                           :rules="[rules.required]"
                           :items="subjects"
-                          item-text="SubjectID"
+                          placeholder=""
+                          item-text="ShowText"
                           item-value="SubjectID"
-                          label="ค้นหารายวิชา"
+                          label="เลือกรายวิชา"
                           hide-details
                           hide-no-data
                           hide-selected
+                          clearable
+                          @change="OnSelectedSubject"
                         ></v-autocomplete>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
+                    </v-row>
+                    <v-row>
+                      <v-col cols="6">
                         <v-text-field
-                          v-model="editedItem.subjectname"
-                          :items="subjects"
-                          item-text="SubjectNameTH"
-                          item-value="SubjectNameTH"
-                          label="ชื่อวิชา"
-                          filled
+                          v-model="Credit"
+                          label="หน่วยกิต"
                           readonly
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                          v-model="editedItem.subjectcredit"
-                          item-text="Credit"
-                          item-value="Credit"
-                          label="หน่วยกิต"
-                          disabled
-                          solo
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="4">
-                        <v-text-field
+                      <v-col cols="6">
+                        <v-autocomplete
                           v-model="editedItem.Grade"
                           :rules="[rules.required]"
+                          :items="Grades"
+                          placeholder=""
                           label="เกรด"
-                        ></v-text-field>
+                          hide-details
+                          hide-no-data
+                          hide-selected
+                          clearable
+                        ></v-autocomplete>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -100,8 +101,8 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="headline"
-                >Confrim to delete
-                {{ editedItem.subjectname }}
+                >Confirm to delete
+                {{ editedItem.SubjectNameTH }}
                 ?</v-card-title
               >
               <v-card-actions>
@@ -109,7 +110,7 @@
                 <v-btn color="gray darken-1" text @click="closeDelete"
                   >Cancel</v-btn
                 >
-                <v-btn color="red darken-1" text @click="deletesuccess"
+                <v-btn color="red darken-1" text @click="ConfirmDelete"
                   >OK</v-btn
                 >
                 <v-spacer></v-spacer>
@@ -117,6 +118,13 @@
             </v-card>
           </v-dialog>
         </v-toolbar>
+      </template>
+      <template #[`item.multiple`]>
+        <tr>
+          <td class="align-middle" v-effect="totalmultiple = Number(editedItem.Credit) * Number(editedItem.Credit)">
+          {{ totalmultiple.toFixed(2) }}
+        </td>
+        </tr>
       </template>
       <template #[`item.actions`]="{ item }">
         <v-icon color="orange" medium class="mr-2" @click="editItem(item)">
@@ -134,6 +142,7 @@
 export default {
   layout: 'Aftermain',
   data: () => ({
+    totalmultiple: 0,
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -146,62 +155,73 @@ export default {
       },
       {
         text: 'รหัสวิชา',
-        value: 'subjectid',
+        value: 'SubjectID',
         sortable: false,
         class: 'tblHeader',
       },
       {
         text: 'ชื่อวิชา',
-        value: 'subjectname',
+        value: 'SubjectNameTH',
         sortable: false,
         class: 'tblHeader',
       },
       {
         text: 'หน่วยกิต',
-        value: 'subjectcredit',
+        value: 'Credit',
         sortable: false,
         class: 'tblHeader',
       },
-      { text: 'เกรด', value: 'Grade', sortable: false, class: 'tblHeader' },
-      { text: '', value: 'actions', sortable: false, class: 'tblHeader' },
+      { 
+      text: 'เกรด', 
+      value: 'Grade', 
+      sortable: false, 
+      class: 'tblHeader' 
+      },
+      {
+      text: 'Multiple', 
+      value: 'multiple', 
+      sortable: false, 
+      class: 'tblHeader' 
+      },
+      {
+      text: 'Action', 
+      value: 'actions', 
+      sortable: false, 
+      class: 'tblHeader' 
+      },
     ],
     items: [],
     subjects: [],
-    year: ['ชั้นปีที่ 1', 'ชั้นปีที่ 2', 'ชั้นปีที่ 3', 'ชั้นปีที่ 4'],
-    term: ['เทอม 1', 'เทอม 2'],
     editedIndex: -1,
     editedItem: {
-      // year: ['ชั้นปีที่ 1', 'ชั้นปีที่ 2', 'ชั้นปีที่ 3', 'ชั้นปีที่ 4'],
-      // term: ['เทอม 1', 'เทอม 2'],
       GradID: '',
-      // SubjectID: '',
-      // SubjectNameTH: '',
-      // Credit: '',
-      subject: { SubjectID: [], SubjectNameTH: [], Credit: [] },
       Grade: '',
-      subjectname: '',
-      subjectid: '',
-      subjectcredit: '',
-      IsActive: '',
+      Term: '',
+      Year: '',
+      StudentID: '',
+      SubjectID: '',
+      multiple:'',
+
+      
     },
     defaultItem: {
-      // year: ['ชั้นปีที่ 1', 'ชั้นปีที่ 2', 'ชั้นปีที่ 3', 'ชั้นปีที่ 4'],
-      // term: ['เทอม 1', 'เทอม 2'],
       GradID: '',
-      // SubjectID: '',
-      // SubjectNameTH: '',
-      // Credit: '',
-      subject: { SubjectID: [], SubjectNameTH: [], Credit: [] },
       Grade: '',
-      subjectname: '',
-      subjectid: '',
-      subjectcredit: '',
-      IsActive: '',
+      Term: '',
+      Year: '',
+      StudentID: '',
+      SubjectID: '',
+      multiple: '',
     },
     rules: {
       required: (value) => !!value || 'Required.',
       // min: v => v && v.length >= 6 || 'Min 6 characters',
     },
+    Credit: '',
+    Years: [{text: 'ชั้นปีที่ 1', value: 1}, {text: 'ชั้นปีที่ 2', value: 2}, {text: 'ชั้นปีที่ 3', value: 3}, {text: 'ชั้นปีที่ 4', value: 4}, {text: 'ชั้นปีที่ 5', value: 5}, {text: 'ชั้นปีที่ 6', value: 6}, {text: 'ชั้นปีที่ 7', value: 7}],
+    term: [{text: 'เทอม 1', value: 1}, {text: 'เทอม 2', value: 2}, {text: 'เทอม 3', value: 3}],
+    Grades: ['A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F'],
+
   }), // สิ้นสด data
   computed: {
     formTitle() {
@@ -229,13 +249,22 @@ export default {
     async loadGrid() {
       try {
         this.items = await this.$axios.$get('/grade')
+        if (this.items) {
+          this.items.forEach((x) => {
+            x.SubjectID = x.subject.SubjectID
+            x.SubjectCode = x.subject.SubjectCode
+            x.SubjectNameTH = x.subject.SubjectNameTH
+            x.Credit = x.subject.Credit
+          })
+        }
+        // console.log(this.items)
+
         this.subjects = await this.$axios.$get('/subject')
-        this.items.forEach((x) => {
-          x.subjectid = x.subject.SubjectID
-          x.subjectname = x.subject.SubjectNameTH
-          x.subjectcredit = x.subject.Credit
-        })
-        console.log(this.subjects)
+        this.subjects.forEach(x => {
+          x.ShowText = x.SubjectID + ' - ' + x.SubjectNameTH
+        });
+        // console.log(this.subjects)
+
         // const res = await this.$axios.$get('/subject')
         // console.log(res.data)
         // this.subjects = res.data.subject
@@ -245,6 +274,13 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+
+    OnSelectedSubject(subjectID) {
+      if (subjectID)
+        this.Credit = this.subjects.filter(x=>x.SubjectID === subjectID)[0].Credit
+      else
+        this.Credit = ''
     },
 
     itemRowBackground(item) {
@@ -258,6 +294,7 @@ export default {
     editItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
+      this.Credit = item.Credit
       this.dialog = true
     },
 
@@ -292,33 +329,40 @@ export default {
     async save() {
       try {
         if (!this.$refs.form.validate()) return
+        // console.log(this.editedItem)
         if (this.editedIndex > -1) {
-          this.editedItem.UpdateBy = 'x'
+          this.editedItem.users = this.$auth.user;
+          this.editedItem.subject = this.subjects.filter(x => x.SubjectID === this.editedItem.SubjectID)[0];
+          this.editedItem.UpdateBy = this.$auth.user.StudentID;
           await this.$axios.$patch(
-            `/grade/${this.editedItem.SubjectID}`,
+            `/grade/${this.editedItem.GradeID}`,
             this.editedItem
           )
         } else {
-          this.editedItem.CreateBy = this.editedItem.UpdateBy = 'student'
+          this.editedItem.users = this.$auth.user;
+          this.editedItem.subject = this.subjects.filter(x => x.SubjectID === this.editedItem.SubjectID)[0];
+          this.editedItem.CreateBy = this.editedItem.UpdateBy = this.$auth.user.StudentID;
           await this.$axios.$post(`/grade`, this.editedItem)
         }
-        /* this.$alert.showMessage({
-          content: 'บันทึกข้อมูลเรียบร้อย',
-          type: 'success',
-        }) */
+        // this.$alert.showMessage({
+        //   content: 'บันทึกข้อมูลเรียบร้อย',
+        //   type: 'success',
+        // })
         this.loadGrid()
         this.close()
       } catch (error) {
         console.error(error)
       }
     },
-    async deletesuccess() {
+    async ConfirmDelete() {
       try {
-        await this.$axios.$delete(`/grade/${this.editedItem.SubjectID}`)
+        await this.$axios.$delete(`/grade/${this.editedItem.GradeID}`)
         /* this.$alert.showMessage({
           content: 'บันทึกเรียบร้อย',
           type: 'success'
         }); */
+        this.loadGrid()
+        this.closeDelete()
       } catch (error) {
         console.error(error)
       }

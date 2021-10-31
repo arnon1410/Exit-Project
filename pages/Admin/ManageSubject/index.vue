@@ -290,7 +290,7 @@ export default {
     async loadGrid() {
       try {
         this.items = await this.$axios.$get('/subject')
-        this.items.forEach(x => {x.groupsub = x.groupsub.GroupID;});
+        this.items.forEach(x => {x.groupsub = x.groupsub.NameGroup;});
         console.log(this.items)
       
       } catch (error) {
