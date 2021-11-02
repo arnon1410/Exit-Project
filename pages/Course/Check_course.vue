@@ -119,13 +119,36 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <template #[`item.multiple`]>
+      <!-- <template #[`item.multiple`]>
         <tr>
           <td class="align-middle" v-effect="totalmultiple = Number(editedItem.Credit) * Number(editedItem.Credit)">
           {{ totalmultiple.toFixed(2) }}
         </td>
         </tr>
-      </template>
+      </template> -->
+
+                <template slot="body.append">
+                    <tr class="blue--text">
+                        <th class="title">Totals</th>
+                        <th></th>
+                        <th></th>
+                        <th class="title">{{ pageSalaries }}</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </template>
+
+                <template slot="body.append">
+                    <tr class="green--text">
+                        <th class="title">สถานภาพ</th>
+                        <th class="title text-center">ปกติ</th>
+                        <th class="title text-right">สะสม</th>
+                        <th class="title">{{ pageSalaries }}</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </template>
+
       <template #[`item.actions`]="{ item }">
         <v-icon color="orange" medium class="mr-2" @click="editItem(item)">
           mdi-pencil
@@ -139,6 +162,9 @@
 </template>
 
 <script>
+
+import { $array } from 'alga-js'
+
 export default {
   layout: 'Aftermain',
   data: () => ({
@@ -178,7 +204,7 @@ export default {
       class: 'tblHeader' 
       },
       {
-      text: 'Multiple', 
+      text: 'ผลคูณ', 
       value: 'multiple', 
       sortable: false, 
       class: 'tblHeader' 
@@ -211,7 +237,7 @@ export default {
       Year: '',
       StudentID: '',
       SubjectID: '',
-      multiple: '',
+      multiple:'',
     },
     rules: {
       required: (value) => !!value || 'Required.',
@@ -226,6 +252,9 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? 'Add Item' : 'Edit Item'
+    },
+    pageSalaries() {
+      return $array.sum(this.items, 'Credit')
     },
 
     /* filteredSub() {
