@@ -299,7 +299,7 @@ export default {
     },
     rules: {
       required: (value) => !!value || 'Required.',
-      // min: v => v && v.length >= 6 || 'Min 6 characters',
+      
     },
     Credit: '',
     subtotal:'',
@@ -358,16 +358,8 @@ export default {
         // หารผลรวม
       }));
 
-      
-      
+  
     }
-
-
-
-
-    /* filteredSub() {
-        return this.subjects.filter(x  => '' + x.class === this.cls)
-      } */
   },
 
   watch: {
@@ -395,20 +387,12 @@ export default {
             x.Credit = x.subject.Credit
           })
         }
-        // console.log(this.items)
 
         this.subjects = await this.$axios.$get('/subject')
         this.subjects.forEach(x => {
           x.ShowText = x.SubjectID + ' - ' + x.SubjectNameTH
         });
-        // console.log(this.subjects)
 
-        // const res = await this.$axios.$get('/subject')
-        // console.log(res.data)
-        // this.subjects = res.data.subject
-        // this.$axios.$get(`/subject/${this.SubjectNameTH}`)
-        // console.log(`ID: ${ this.subjects.SubjectID }== Name: ${ this.subjects.SubjectNameTH }`)
-        // console.log(this.subjects);
       } catch (error) {
         console.error(error)
       }
@@ -426,7 +410,6 @@ export default {
 
     itemRowBackground(item) {
       return (
-        // eslint-disable-next-line no-sequences
         this.items.indexOf(item) % 2 === 0 ? 'style-1' : 'style-2',
         this.subjects.indexOf(item) % 2 === 0 ? 'style-1' : 'style-2'
       )
@@ -471,7 +454,7 @@ export default {
     async save() {
       try {
         if (!this.$refs.form.validate()) return
-        // console.log(this.editedItem)
+
         if (this.editedIndex > -1) {
           this.editedItem.users = this.$auth.user;
           this.editedItem.subject = this.subjects.filter(x => x.SubjectID === this.editedItem.SubjectID)[0];
@@ -486,10 +469,6 @@ export default {
           this.editedItem.CreateBy = this.editedItem.UpdateBy = this.$auth.user.StudentID;
           await this.$axios.$post(`/grade`, this.editedItem)
         }
-        // this.$alert.showMessage({
-        //   content: 'บันทึกข้อมูลเรียบร้อย',
-        //   type: 'success',
-        // })
         this.loadGrid()
         this.close()
       } catch (error) {
@@ -499,10 +478,6 @@ export default {
     async ConfirmDelete() {
       try {
         await this.$axios.$delete(`/grade/${this.editedItem.GradeID}`)
-        /* this.$alert.showMessage({
-          content: 'บันทึกเรียบร้อย',
-          type: 'success'
-        }); */
         this.loadGrid()
         this.closeDelete()
       } catch (error) {
