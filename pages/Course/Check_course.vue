@@ -3,12 +3,44 @@
     <v-card-title></v-card-title>
     <v-data-table
       :headers="headers"
-      :items="detailsWithSubTotal"
+      :items="filteritems"
       :item-class="itemRowBackground"
       item-key="GradeID"
       class="elevation-3"
       sort-by=""
     >
+    <template #header>
+					<tr class="grey lighten-3">
+						<th v-for="header in headers" :key="header.text">
+							<div v-if="filters.hasOwnProperty(header.value)">
+								<v-autocomplete
+									v-model="filters[header.value]"
+									flat
+									hide-details
+									multiple
+									attach
+									chips
+									dense
+									clearable
+									:items="columnValueList(header.value)"
+								>
+                <template #selection="{ item, index }">
+                      <v-chip v-if="index < 5">
+											 <span>
+                        {{ item }}
+                      </span>
+										</v-chip>
+										<span v-if="index === 5" class="grey--text caption" >
+                      (+{{ filters[header.value].length - 5 }} others)
+                      </span>
+									</template>
+								</v-autocomplete>
+							</div>
+						</th>
+					</tr>
+				</template>
+
+
       <template #top>
         <v-toolbar flat>
           <v-autocomplete
@@ -132,8 +164,9 @@
                         <th class="title">Totals</th>
                         <th></th>
                         <th></th>
-                        <th class="title text-center">{{ pageCredit }}</th>
                         <th></th>
+                        <th class="title text-center">{{ pageCredit }}</th>
+                        <th class="title"></th>
                         <th class="title text-center">{{ Totalpage }}</th>
                         <th class="title text-center">{{ TotalAllpage.toFixed(2) }}</th>
                     </tr>
@@ -143,6 +176,7 @@
                     <tr class="green--text">
                         <th class="title">สถานภาพ</th>
                         <th class="title text-right">ปกติ</th>
+                        <th class="title"></th>
                         <th class="title text-right">สะสม</th>
                         <th class="title text-center">{{ pageCredit }}</th>
                         <th class="title"></th>
@@ -175,10 +209,17 @@ export default {
     dialogDelete: false,
     headers: [
       {
-        text: 'ลำดับ',
+        text: 'ปีการศึกษา',
         align: 'center',
+        value: 'Year',
         sortable: false,
-        value: 'GradID',
+        class: 'teal darken-2 white--text',
+      },
+      {
+        text: 'เทอม',
+        align: 'center',
+        value: 'Term',
+        sortable: false,
         class: 'teal darken-2 white--text',
       },
       {
@@ -210,7 +251,7 @@ export default {
       class: 'teal darken-2 white--text' 
       },
       {
-      text: 'Subtotal',
+      text: 'ผลคูณเกรดและหน่วยกิต',
       align: 'center', 
       value: 'subtotal', 
       sortable: false, 
@@ -224,7 +265,15 @@ export default {
       class: 'teal darken-2 white--text' 
       },
     ],
-    
+    filters: {
+      GradeID: [],
+      SubjectID: [],
+      SubjectNameTH: [],
+      Credit: [],
+      Grade: [],
+      Term: [],
+      Year: [],
+    },
     items: [],
     subjects: [],
     editedIndex: -1,
@@ -272,6 +321,16 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'Add Item' : 'Edit Item'
     },
+
+    filteritems() {
+      return this.items.filter((d) => {
+					return Object.keys(this.filters).every((f) => {
+						return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+					});
+				});
+      
+    },
+
     pageCredit() {
       return $array.sum(this.items, 'Credit')
     },
@@ -295,7 +354,10 @@ export default {
         subtotal2: detail.Grade / detail.Credit,
         source: detail, 
         // หารผลรวม
-      }))
+      }));
+
+      
+      
     }
 
 
@@ -356,6 +418,9 @@ export default {
       else
         this.Credit = ''
     },
+    columnValueList(val) {
+				return this.items.map((d) => d[val]);
+		},
 
     itemRowBackground(item) {
       return (
