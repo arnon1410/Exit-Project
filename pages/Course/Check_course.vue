@@ -134,20 +134,20 @@
                         <th></th>
                         <th class="title">{{ pageCredit }}</th>
                         <th></th>
-                        <th></th>
-                        <th></th>
+                        <th class="title">{{ Totalpage }}</th>
+                        <th class="title">{{ TotalAllpage }}</th>
                     </tr>
                 </template>
 
                 <template slot="body.append">
                     <tr class="green--text">
                         <th class="title">สถานภาพ</th>
-                        <th class="title text-center">ปกติ</th>
+                        <th class="title text-right">ปกติ</th>
                         <th class="title text-right">สะสม</th>
                         <th class="title">{{ pageCredit }}</th>
                         <th class="title"></th>
-                        <th></th>
-                        <th></th>
+                        <th class="title">{{ Totalpage }}</th>
+                        <th class="title">{{ TotalAllpage }}</th>
                     </tr>
                 </template>
 
@@ -155,7 +155,7 @@
         <v-icon color="orange" medium class="mr-2" @click="editItem(item)">
           mdi-pencil
         </v-icon>
-        <v-icon color="red" medium @click="deleteItem(detailsWithSubTotal,item)">
+        <v-icon color="red" medium @click="deleteItem(item)">
           mdi-delete
         </v-icon>
       </template>
@@ -183,6 +183,7 @@ export default {
       },
       {
         text: 'รหัสวิชา',
+        align: 'start',
         value: 'SubjectID',
         sortable: false,
         class: 'tblHeader',
@@ -247,6 +248,8 @@ export default {
       // min: v => v && v.length >= 6 || 'Min 6 characters',
     },
     Credit: '',
+    subtotal:'',
+    Alltotal:'',
     Years: [{text: 'ชั้นปีที่ 1', value: 1}, {text: 'ชั้นปีที่ 2', value: 2}, {text: 'ชั้นปีที่ 3', value: 3}, {text: 'ชั้นปีที่ 4', value: 4}, {text: 'ชั้นปีที่ 5', value: 5}, {text: 'ชั้นปีที่ 6', value: 6}, {text: 'ชั้นปีที่ 7', value: 7}],
     term: [{text: 'เทอม 1', value: 1}, {text: 'เทอม 2', value: 2}, {text: 'เทอม 3', value: 3}],
     Grades: [
@@ -269,17 +272,28 @@ export default {
     },
 
     Totalpage() {
-      return $array.sum(this.items, 'subtotal')
+      return $array.sum(this.detailsWithSubTotal, 'subtotal')
+      
+    },
+    TotalAllpage() {
+      return $array.sum(this.detailsWithSubTotal, 'Alltotal')
+      
     },
 
     detailsWithSubTotal() {
       // Each new added detail, updates the detailsWithSubTotal
       // computed property, so you have the subtotal calc in
       // each detail
-      return this.items.map((editedItem) => ({
-        ...editedItem,
-        subtotal: this.editedItem.Grade * this.Credit,
-        source: editedItem
+      return this.items.map((detail) => ({
+        ...detail,
+        subtotal: detail.Grade * detail.Credit,
+
+        Alltotal: detail.pageCredit / detail.Totalpage,
+        source: detail,
+
+       
+        
+        // หารผลรวม
       }))
     }
 
@@ -357,10 +371,11 @@ export default {
       this.dialog = true
     },
 
-    deleteItem(item) {
+    deleteItem(arr,item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
+      
     },
 
     deleteItemConfirm() {
