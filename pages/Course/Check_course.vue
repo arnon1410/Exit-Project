@@ -132,10 +132,10 @@
                         <th class="title">Totals</th>
                         <th></th>
                         <th></th>
-                        <th class="title">{{ pageCredit }}</th>
+                        <th class="title text-center">{{ pageCredit }}</th>
                         <th></th>
-                        <th class="title">{{ Totalpage }}</th>
-                        <th class="title">{{ TotalAllpage }}</th>
+                        <th class="title text-center">{{ Totalpage }}</th>
+                        <th class="title text-center">{{ TotalAllpage.toFixed(2) }}</th>
                     </tr>
                 </template>
 
@@ -144,10 +144,10 @@
                         <th class="title">สถานภาพ</th>
                         <th class="title text-right">ปกติ</th>
                         <th class="title text-right">สะสม</th>
-                        <th class="title">{{ pageCredit }}</th>
+                        <th class="title text-center">{{ pageCredit }}</th>
                         <th class="title"></th>
-                        <th class="title">{{ Totalpage }}</th>
-                        <th class="title">{{ TotalAllpage }}</th>
+                        <th class="title text-center">{{ Totalpage }}</th>
+                        <th class="title text-center">{{ TotalAllpage.toFixed(2) }}</th>
                     </tr>
                 </template>
 
@@ -176,47 +176,52 @@ export default {
     headers: [
       {
         text: 'ลำดับ',
-        align: 'start',
+        align: 'center',
         sortable: false,
         value: 'GradID',
-        class: 'tblHeader',
+        class: 'teal darken-2 white--text',
       },
       {
         text: 'รหัสวิชา',
-        align: 'start',
+        align: 'center',
         value: 'SubjectID',
         sortable: false,
-        class: 'tblHeader',
+        class: 'teal darken-2 white--text',
       },
       {
         text: 'ชื่อวิชา',
+        align: 'center',
         value: 'SubjectNameTH',
         sortable: false,
-        class: 'tblHeader',
+        class: 'teal darken-2 white--text',
       },
       {
         text: 'หน่วยกิต',
+        align: 'center',
         value: 'Credit',
         sortable: false,
-        class: 'tblHeader',
+        class: 'teal darken-2 white--text',
       },
       { 
-      text: 'เกรด', 
+      text: 'เกรด',
+      align: 'center', 
       value: 'Grade', 
       sortable: false, 
-      class: 'tblHeader' 
+      class: 'teal darken-2 white--text' 
       },
       {
-      text: 'Subtotal', 
+      text: 'Subtotal',
+      align: 'center', 
       value: 'subtotal', 
       sortable: false, 
-      class: 'tblHeader' 
+      class: 'teal darken-2 white--text' 
       },
       {
-      text: 'Action', 
+      text: 'GPA',
+      align: 'center', 
       value: 'actions', 
       sortable: false, 
-      class: 'tblHeader' 
+      class: 'teal darken-2 white--text' 
       },
     ],
     
@@ -249,7 +254,7 @@ export default {
     },
     Credit: '',
     subtotal:'',
-    Alltotal:'',
+    Alltotal:0,
     Years: [{text: 'ชั้นปีที่ 1', value: 1}, {text: 'ชั้นปีที่ 2', value: 2}, {text: 'ชั้นปีที่ 3', value: 3}, {text: 'ชั้นปีที่ 4', value: 4}, {text: 'ชั้นปีที่ 5', value: 5}, {text: 'ชั้นปีที่ 6', value: 6}, {text: 'ชั้นปีที่ 7', value: 7}],
     term: [{text: 'เทอม 1', value: 1}, {text: 'เทอม 2', value: 2}, {text: 'เทอม 3', value: 3}],
     Grades: [
@@ -270,13 +275,13 @@ export default {
     pageCredit() {
       return $array.sum(this.items, 'Credit')
     },
-
+// บรรทัดบนเป็น Filter
     Totalpage() {
       return $array.sum(this.detailsWithSubTotal, 'subtotal')
       
     },
     TotalAllpage() {
-      return $array.sum(this.detailsWithSubTotal, 'Alltotal')
+      return $array.sum(this.detailsWithSubTotal, 'subtotal2')
       
     },
 
@@ -287,12 +292,8 @@ export default {
       return this.items.map((detail) => ({
         ...detail,
         subtotal: detail.Grade * detail.Credit,
-
-        Alltotal: detail.pageCredit / detail.Totalpage,
-        source: detail,
-
-       
-        
+        subtotal2: detail.Grade / detail.Credit,
+        source: detail, 
         // หารผลรวม
       }))
     }
