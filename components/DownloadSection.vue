@@ -72,8 +72,10 @@ export default {
 
       await this.$auth.loginWith('local', {data: this.loginInfo}).then(
         (res) => {
-        
-          this.$router.push('Dashboard');
+          if (this.$auth.user.UserRole === 'User')
+            this.$router.push('Dashboard');
+          else
+            this.$router.push('DashboardAd');
         },
         (error) => {
 

@@ -327,27 +327,29 @@ export default {
 					return Object.keys(this.filters).every((f) => {
 						return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
 					});
-				});
+				}).map((detail) => ({
+        ...detail,
+        subtotal: detail.Grade * detail.Credit,
+        subtotal2: detail.Grade / detail.Credit,
+        source: detail, 
+        // หารผลรวม
+      }));
       
     },
 
     pageCredit() {
-      return $array.sum(this.items, 'Credit')
+      return $array.sum(this.filteritems, 'Credit')
     },
 // บรรทัดบนเป็น Filter
     Totalpage() {
-      return $array.sum(this.detailsWithSubTotal, 'subtotal')
+      return $array.sum(this.filteritems, 'subtotal')
       
     },
     TotalAllpage() {
-      return $array.sum(this.detailsWithSubTotal, 'subtotal2')
+      return $array.sum(this.filteritems, 'subtotal2')
       
     },
-
     detailsWithSubTotal() {
-      // Each new added detail, updates the detailsWithSubTotal
-      // computed property, so you have the subtotal calc in
-      // each detail
       return this.items.map((detail) => ({
         ...detail,
         subtotal: detail.Grade * detail.Credit,

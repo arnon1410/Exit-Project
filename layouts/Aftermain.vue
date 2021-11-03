@@ -1,5 +1,6 @@
 <template>
   <v-app dark >
+    <Snackbar />
 
 <!--Sidebar-->
     <v-navigation-drawer
@@ -160,7 +161,9 @@
 </template>
 
 <script>
+import Snackbar from "@/components/Snackbar";
 export default {
+  components: { Snackbar },
   data: () => ({
 
       flat: false,
