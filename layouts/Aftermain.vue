@@ -198,6 +198,7 @@ export default {
           icon: 'mdi mdi-book-open-variant',
           color: '',
           items: [
+            
             { title: 'ตรวจสอบผลการเรียน',icon: 'mdi-tools', to: '/Course/Check_course'},
             { title: 'ผลการเรียนของนิสิต',icon: 'mdi-tools', to: '/Course/Sum_course'},
           ],
@@ -207,8 +208,7 @@ export default {
           icon: 'mdi-calendar-clock',
           color: '',
           items: [
-            { title: 'กิจกรรมมหาวิทยาลัย',icon: 'mdi-tools', to: '/Activity/At_Ku'},
-            { title: 'สรุปผล',icon: 'mdi-tools', to: '/Activity/Sum_At'},
+            { title: 'บันทึกกิจกรรมมหาลัย',icon: 'mdi-tools', to: '/Activity/At_Ku'},
           ],
           title: 'ชั่วโมงกิจกรรม',
         },
@@ -241,6 +241,7 @@ export default {
           icon: 'mdi mdi-book-open-variant',
           color: '',
           items: [
+            { title: 'Dashboard',icon: 'mdi-tools', to: '/Dashboard'},
             { title: 'Manage GroupSubject',icon: 'mdi-tools', to: '/Admin/ManageGroupSub'},
             { title: 'Manage Course',icon: 'mdi-tools', to: '/Admin/ManageSubject'},
             { title: 'Manage Users',icon: 'mdi-tools', to: '/Admin/ManageUser'},
@@ -257,7 +258,6 @@ export default {
             { title: 'ระบบสารสนเทศ', link: 'https://misreg.csc.ku.ac.th/misreg/student/'},
             { title: 'ตรวจสอบห้องสอบ', link: 'https://misreg.csc.ku.ac.th/fsespt/exam/exam_nisit/search.php'},
           ],
-          title: 'เอกสารหลักสูตร',
         },
         {
           icon: 'mdi-web',

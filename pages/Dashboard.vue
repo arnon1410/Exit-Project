@@ -26,7 +26,7 @@
                     <v-card-title class="justify-center">สถานภาพการศึกษา</v-card-title>
                     <v-card-title class="justify-center">
                       <div id="parent">
-                        <p v-if="grade === ''">รอพินิจ</p>
+                        <p v-if="TotalAllpage === ''">รอพินิจ</p>
                         <p v-else>ปกติ</p>
                       </div>
                     </v-card-title>
@@ -51,7 +51,7 @@
                           class="d-block ml-auto mr-auto ma-2">
                       </v-img>
                       <v-card-title class="justify-center">ชั่วโมงกิจกรรมสะสม</v-card-title>
-                      <v-card-title class="justify-center">{{activitytime}}/150</v-card-title>
+                      <v-card-title class="justify-center">{{pageActivityCount}}/150</v-card-title>
                     </v-card>
                   </v-row>
                 </v-col>
@@ -74,7 +74,6 @@ export default {
 
   layout: 'Aftermain',
   data: () => ({
-    totalmultiple: 0,
     dialog: false,
     dialogDelete: false,
 
@@ -88,6 +87,12 @@ export default {
       Year: '',
       StudentID: '',
       SubjectID: '',
+            
+      ActivityID: '',
+      ActivityType: '',
+      ActivityName: '',
+      ActivityCount: '',
+      IsActive: '',
     
     },
     defaultItem: {
@@ -98,6 +103,12 @@ export default {
       StudentID: '',
       SubjectID: '',
 
+      ActivityID: '',
+      ActivityType: '',
+      ActivityName: '',
+      ActivityCount: '',
+      IsActive: '',
+
     },
     rules: {
       required: (value) => !!value || 'Required.',
@@ -106,19 +117,9 @@ export default {
     Credit: '',
     subtotal:'',
     Alltotal:0,
-    Years: [{text: 'ชั้นปีที่ 1', value: 1}, {text: 'ชั้นปีที่ 2', value: 2}, {text: 'ชั้นปีที่ 3', value: 3}, {text: 'ชั้นปีที่ 4', value: 4}, {text: 'ชั้นปีที่ 5', value: 5}, {text: 'ชั้นปีที่ 6', value: 6}, {text: 'ชั้นปีที่ 7', value: 7}],
-    term: [{text: 'เทอม 1', value: 1}, {text: 'เทอม 2', value: 2}, {text: 'เทอม 3', value: 3}],
-    Grades: [
-      {text: 'A', value: 4}, 
-      {text: 'B+', value: 3.5}, 
-      {text: 'B', value: 3}, 
-      {text: 'C+', value: 2.5}, 
-      {text: 'C', value: 2}, 
-      {text: 'D+', value: 1.5},  
-      {text: 'D', value: 1}, 
-      {text: 'F', value: 0},],
+    ActivityCount: '',
 
-  }), // สิ้นสด data
+  }), // สิ้นสุด data
   computed: {
 
     pageCredit() {
@@ -133,11 +134,18 @@ export default {
       return $array.sum(this.detailsWithSubTotal, 'subtotal2')
       
     },
+    pageActivityCount() {
+      return $array.sum(this.activity, 'ActivityCount')
+      
+    },
+
+
     detailsWithSubTotal() {
       return this.items.map((detail) => ({
         ...detail,
         subtotal: detail.Grade * detail.Credit,
         subtotal2: detail.Grade / detail.Credit,
+ 
         source: detail, 
         // หารผลรวม
       }));
@@ -159,9 +167,9 @@ export default {
   },
 
   methods: {
-
     async loadGrid() {
       try {
+        this.activity = await this.$axios.$get('/activity')
         this.items = await this.$axios.$get('/grade')
         if (this.items) {
           this.items.forEach((x) => {
@@ -174,8 +182,8 @@ export default {
         this.subjects = await this.$axios.$get('/subject')
         this.subjects.forEach(x => {
           x.ShowText = x.SubjectID + ' - ' + x.SubjectNameTH
-        });
-
+        },
+        );
       } catch (error) {
         console.error(error)
       }

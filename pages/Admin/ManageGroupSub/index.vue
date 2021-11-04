@@ -224,8 +224,6 @@ export default {
     },
     closeConfirm() {
       this.dialog = false;
-      this.selected = [];
-      this.SelectedText = "";
       
     },
 

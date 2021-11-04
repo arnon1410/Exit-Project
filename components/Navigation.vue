@@ -95,11 +95,10 @@ export default {
     isXs: false,
     items: [
       ["mdi-home-outline", "Home", "#hero"],
-      ["mdi-information-outline", "Sobre", "#features"],
-      ["mdi-download-box-outline", "Download", "#download"],
-      ["mdi-currency-usd", "Preços", "#pricing"],
-      ["mdi-email-outline", "Contatos", "#contact"],
-      ["mdi-email-outline", "Footer", "#footer"],
+      ["mdi-information-outline", "Course", "#features"],
+      ["mdi-download-box-outline", "Sign in", "#download"],
+      ["mdi-currency-usd", "Sign up", "#pricing"],
+
     ],
   }),
     watch: {
