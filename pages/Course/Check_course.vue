@@ -346,7 +346,7 @@ export default {
       
     },
     TotalAllpage() {
-      return $array.sum(this.filteritems, 'subtotal2')
+      return $array.sum(this.detailsWithSubTotal, 'subtotal2')
       
     },
     detailsWithSubTotal() {
@@ -355,7 +355,7 @@ export default {
         subtotal: detail.Grade * detail.Credit,
         subtotal2: detail.Grade / detail.Credit,
         source: detail, 
-        // หารผลรวม
+
       }));
 
   
@@ -378,7 +378,7 @@ export default {
 
     async loadGrid() {
       try {
-        this.items = await this.$axios.$get('/grade')
+        this.items = await this.$axios.$get(`/grade/ByUserID/${this.$auth.user.StudentID}`);
         if (this.items) {
           this.items.forEach((x) => {
             x.SubjectID = x.subject.SubjectID
@@ -387,7 +387,7 @@ export default {
             x.Credit = x.subject.Credit
           })
         }
-
+console.log(this.items)
         this.subjects = await this.$axios.$get('/subject')
         this.subjects.forEach(x => {
           x.ShowText = x.SubjectID + ' - ' + x.SubjectNameTH
@@ -410,7 +410,7 @@ export default {
 
     itemRowBackground(item) {
       return (
-        this.items.indexOf(item) % 2 === 0 ? 'style-1' : 'style-2',
+        // this.items.indexOf(item) % 2 === 0 ? 'style-1' : 'style-2',
         this.subjects.indexOf(item) % 2 === 0 ? 'style-1' : 'style-2'
       )
     },

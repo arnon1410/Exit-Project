@@ -15,7 +15,7 @@
           <v-spacer></v-spacer>
             <v-dialog v-model="dialog" width="600px">
                 <template #activator="{ on, attrs }">
-                  <v-btn color="teal darken-2"  class="mx-3" v-bind="attrs" v-on="on">
+                  <v-btn color="teal darken-2"  class="white--text" v-bind="attrs" v-on="on">
                     เพิ่ม
                   </v-btn>
                 </template>
@@ -137,6 +137,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    
     search: '',
     headers: [
       {
@@ -144,26 +145,26 @@ export default {
         align: 'center',
         value: 'ActivityID',
         sortable: false,
-        class: 'tblHeader',
+        class: 'teal darken-2 white--text',
       },
       {
         text: ' ประเภทกิจกรรม',
         align: 'center',
         value: 'ActivityType',
-        class: 'tblHeader' },
+        class: 'teal darken-2 white--text'},
       {
         text: ' ชื่อกิจกรรม',
         align: 'center',
         value: 'ActivityName',
-        class: 'tblHeader' },
+        class: 'teal darken-2 white--text'},
       {
         text: 'จำนวนหน่วยชั่วโมง',
         align: 'center',
         value: 'ActivityCount',
-        class: 'tblHeader',
+        class: 'teal darken-2 white--text',
       },
 
-      { text: 'Action', value: 'actions', sortable: false, class: 'tblHeader' },
+      { text: 'Action', value: 'actions', sortable: false, class: 'teal darken-2 white--text'},
     ],
 
     filters: {
@@ -174,6 +175,7 @@ export default {
 
     },
     items: [],
+    TotalActivity:[],
     subjects: [],
     editedIndex: -1,
     editedItem: {
@@ -206,7 +208,6 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? 'Add Item' : 'Edit Item'
     },
-
     pageActivityCount() {
       return $array.sum(this.items, 'ActivityCount')
     },
@@ -228,7 +229,8 @@ export default {
 
     async loadGrid() {
       try {
-        this.items = await this.$axios.$get('/activity')
+        // this.items = await this.$axios.$get('/activity')
+        this.items = await this.$axios.$get(`/activity/ByUserID/${this.$auth.user.StudentID}`);
       } catch (error) {
         console.error(error)
       }

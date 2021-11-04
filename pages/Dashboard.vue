@@ -51,7 +51,7 @@
                           class="d-block ml-auto mr-auto ma-2">
                       </v-img>
                       <v-card-title class="justify-center">ชั่วโมงกิจกรรมสะสม</v-card-title>
-                      <v-card-title class="justify-center">{{pageCredit}}/150</v-card-title>
+                      <v-card-title class="justify-center">{{ActivityCount}}/150</v-card-title>
                     </v-card>
                   </v-row>
                 </v-col>
@@ -69,16 +69,15 @@
 
 <script>
 import { $array } from 'alga-js'
-
 export default {
 
   layout: 'Aftermain',
   data: () => ({
     dialog: false,
     dialogDelete: false,
-
     items: [],
     subjects: [],
+    activity:[],
     editedIndex: -1,
     editedItem: {
       GradID: '',
@@ -87,7 +86,6 @@ export default {
       Year: '',
       StudentID: '',
       SubjectID: '',
-
       ActivityID: '',
       ActivityType: '',
       ActivityName: '',
@@ -114,10 +112,10 @@ export default {
       required: (value) => !!value || 'Required.',
 
     },
-    Credit: '',
+    Credit: 0,
     subtotal:'',
     Alltotal:0,
-    ActivityCount: '',
+    ActivityCount: 0,
 
   }), // สิ้นสุด data
   computed: {
@@ -134,10 +132,10 @@ export default {
       return $array.sum(this.detailsWithSubTotal, 'subtotal2')
 
     },
-    // pageActivityCount() {
-     // return $array.sum(this.activity, 'ActivityCount')
+     pageActivityCount() {
+      return $array.sum(this.detailsWithSubTotal, 'subtotal3')
 
-    // },
+     },
 
 
     detailsWithSubTotal() {
@@ -145,6 +143,7 @@ export default {
         ...detail,
         subtotal: detail.Grade * detail.Credit,
         subtotal2: detail.Grade / detail.Credit,
+        subtotal3: detail.ActivityCount,
 
         source: detail,
         // หารผลรวม
@@ -169,16 +168,29 @@ export default {
   methods: {
     async loadGrid() {
       try {
-        this.activity = await this.$axios.$get('/activity')
-        this.items = await this.$axios.$get('/grade')
+        this.activity = await this.$axios.$get(`/activity/ByUserID/${this.$auth.user.StudentID}`)
+        this.ActivityCount = $array.sum(this.activity, 'ActivityCount')
+        
+        this.items = await this.$axios.$get(`/grade/ByUserID/${this.$auth.user.StudentID}`);
         if (this.items) {
+          // this.subjects = await this.$axios.$get('/subject')
           this.items.forEach((x) => {
-            x.SubjectID = x.subject.SubjectID
-            x.SubjectCode = x.subject.SubjectCode
-            x.SubjectNameTH = x.subject.SubjectNameTH
+            // x.SubjectID = x.subject.SubjectID
+            // x.SubjectCode = x.subject.SubjectCode
+            // x.SubjectNameTH = x.subject.SubjectNameTH
             x.Credit = x.subject.Credit
+            /* x.subjectid = x.subject.SubjectID
+          x.SubjectCode = x.subject.SubjectCode
+          x.subjectname = x.subject.SubjectNameTH
+          x.subjectcredit = x.subject.Credit */
           })
         }
+        // if (this.items) {
+        //   this.items.forEach((x) => {
+        //     this.Credit = this.Credit + +x.subject.Credit
+        //   })
+        // }
+
         this.subjects = await this.$axios.$get('/subject')
         this.subjects.forEach(x => {
           x.ShowText = x.SubjectID + ' - ' + x.SubjectNameTH
