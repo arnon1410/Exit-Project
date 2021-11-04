@@ -219,7 +219,7 @@ export default {
           items: [
 
             { title: 'ตรวจสอบผลการเรียน',icon: 'mdi-tools', to: '/Course/Check_course'},
-            { title: 'ผลการเรียนของนิสิต',icon: 'mdi-tools', to: '/Course/Sum_course'},
+            
           ],
           title: 'หลักสูตร',
         },

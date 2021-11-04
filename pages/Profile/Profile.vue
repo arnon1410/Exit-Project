@@ -12,17 +12,15 @@
       </v-row>
       <v-container style="max-width">
         <v-row justify="center">
-          <v-col cols="5" md="3">
+          <v-col cols="6" md="3">
             <v-text-field 
               v-model="userprofile.StudentID" 
               label="StudentID" 
               placeholder="StudentID"
               @keydown.enter="UpdateUser">
               </v-text-field>
-
           </v-col>
-
-          <v-col cols="5" md="3">
+          <v-col cols="6" md="3">
             <v-text-field
               v-model="userprofile.UserName" 
               label="Username"
@@ -31,13 +29,22 @@
             </v-text-field>
           </v-col>
         </v-row>
-      </v-container>
+
       <v-row justify="center">
-        <v-col cols="12" sm="6" md="6">
+        <v-col cols="6" md="3">
           <v-text-field
             v-model="userprofile.Email" 
             label="Email" 
             placeholder="Email"
+            @keydown.enter="UpdateUser">
+          </v-text-field>
+        </v-col>
+
+        <v-col cols="5" md="3">
+          <v-text-field
+            v-model="userprofile.Name" 
+            label="Name" 
+            placeholder="Name"
             @keydown.enter="UpdateUser">
           </v-text-field>
         </v-col>
@@ -52,6 +59,7 @@
           </v-text-field>
         </v-col>
       </v-row>
+            </v-container>
       <v-row justify="center">
         <v-col cols="12" sm="6" md="6">
           <v-text-field
@@ -62,17 +70,6 @@
           </v-text-field>
         </v-col>
       </v-row>
-       <!--<v-row justify="center">
-       <v-col cols="12" sm="6" md="6">
-          <v-text-field
-            v-model="userprofile.Password"
-            label="Password"
-            type="password"
-            persistent-hint
-            @keydown.enter="UpdateUser">
-          </v-text-field>
-        </v-col>
-      </v-row>-->
       <v-container fluid class="text-center">
         <v-row class="flex" justify="space-between">
           <v-col cols="12">
@@ -121,12 +118,13 @@ export default {
       if (!this.$refs.form.validate()) return;
         try {
           this.userprofile.UpdateBy = this.$auth.user.StudentID;
-          await this.$axios.$patch(`/users/${this.$auth.user.StudentID}`, this.userprofile)
-          this.$router.push('/Dashboard')
+          await this.$axios.$patch(`/users/${this.$auth.user.StudentID}`, this.userprofile);
+            
 
-        } catch {
-          this.$store.dispatch('snackbar/setSnackbar', {color: 'red', text: 'There was an issue signing up.  Please try again.'})
+        } catch (error){
+            console.error(error)
         }
+
     }
   }
 

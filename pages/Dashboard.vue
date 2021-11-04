@@ -26,7 +26,7 @@
                     <v-card-title class="justify-center">สถานภาพการศึกษา</v-card-title>
                     <v-card-title class="justify-center">
                       <div id="parent">
-                        <p v-if="TotalAllpage === ''">รอพินิจ</p>
+                        <p v-if="TotalAllpage > 0">รอพินิจ</p>
                         <p v-else>ปกติ</p>
                       </div>
                     </v-card-title>
