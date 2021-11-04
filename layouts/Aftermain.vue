@@ -13,8 +13,18 @@
       width="260"
       class=" teal darken-2"
     >
-    <v-list >
-      <v-list-item to='/Dashboard'>
+    <v-list>
+
+      <v-list-item v-if="IsAdmin" to='/DashboardAd'>
+
+        <v-list-item-icon>
+          <v-icon>mdi-home</v-icon>
+        </v-list-item-icon>
+        <v-list-item-title>Dashboard</v-list-item-title>
+      </v-list-item>
+
+      <v-list-item v-else to='/Dashboard'>
+
         <v-list-item-icon>
           <v-icon>mdi-home</v-icon>
         </v-list-item-icon>
@@ -28,7 +38,7 @@
         color="black"
         no-action
       >
-        <template v-slot:activator>
+        <template #activator>
           <v-list-item-icon>
             <v-icon  :color="item.color">{{item.icon}}</v-icon>
            </v-list-item-icon>
@@ -63,7 +73,7 @@
           </v-list-item>
       </v-list-group>
     </v-list>
-      <template v-slot:append>
+      <template #append>
       <div class="pa-5" >
         <v-btn
          block
@@ -164,8 +174,9 @@
 import Snackbar from "@/components/Snackbar";
 export default {
   components: { Snackbar },
-  data: () => ({
 
+  data: () => ({
+      IsAdmin: false,
       flat: false,
       clipped: true,
       drawer: true,
@@ -191,14 +202,22 @@ export default {
         }
     ],
   }),
+  computed:{
+
+  },
+
     created() {
+      if (this.$auth!== undefined && this.$auth.user.UserRole === 'Admin'){
+        this.IsAdmin =true
+      }
+
     if (this.$auth.user.UserRole === 'User')
      this.items = [
         {
           icon: 'mdi mdi-book-open-variant',
           color: '',
           items: [
-            
+
             { title: 'ตรวจสอบผลการเรียน',icon: 'mdi-tools', to: '/Course/Check_course'},
             { title: 'ผลการเรียนของนิสิต',icon: 'mdi-tools', to: '/Course/Sum_course'},
           ],
@@ -241,7 +260,6 @@ export default {
           icon: 'mdi mdi-book-open-variant',
           color: '',
           items: [
-            { title: 'Dashboard',icon: 'mdi-tools', to: '/Dashboard'},
             { title: 'Manage GroupSubject',icon: 'mdi-tools', to: '/Admin/ManageGroupSub'},
             { title: 'Manage Course',icon: 'mdi-tools', to: '/Admin/ManageSubject'},
             { title: 'Manage Users',icon: 'mdi-tools', to: '/Admin/ManageUser'},
@@ -273,6 +291,7 @@ export default {
       ]
 
   },
+
    methods: {
     handleClick(index) {
       this.items2[index].click.call(this)

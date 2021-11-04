@@ -51,7 +51,7 @@
                           class="d-block ml-auto mr-auto ma-2">
                       </v-img>
                       <v-card-title class="justify-center">ชั่วโมงกิจกรรมสะสม</v-card-title>
-                      <v-card-title class="justify-center">{{pageActivityCount}}/150</v-card-title>
+                      <v-card-title class="justify-center">{{pageCredit}}/150</v-card-title>
                     </v-card>
                   </v-row>
                 </v-col>
@@ -87,13 +87,13 @@ export default {
       Year: '',
       StudentID: '',
       SubjectID: '',
-            
+
       ActivityID: '',
       ActivityType: '',
       ActivityName: '',
       ActivityCount: '',
       IsActive: '',
-    
+
     },
     defaultItem: {
       GradID: '',
@@ -112,7 +112,7 @@ export default {
     },
     rules: {
       required: (value) => !!value || 'Required.',
-      
+
     },
     Credit: '',
     subtotal:'',
@@ -128,16 +128,16 @@ export default {
 // บรรทัดบนเป็น Filter
     Totalpage() {
       return $array.sum(this.detailsWithSubTotal, 'subtotal')
-      
+
     },
     TotalAllpage() {
       return $array.sum(this.detailsWithSubTotal, 'subtotal2')
-      
+
     },
-    pageActivityCount() {
-      return $array.sum(this.activity, 'ActivityCount')
-      
-    },
+    // pageActivityCount() {
+     // return $array.sum(this.activity, 'ActivityCount')
+
+    // },
 
 
     detailsWithSubTotal() {
@@ -145,12 +145,12 @@ export default {
         ...detail,
         subtotal: detail.Grade * detail.Credit,
         subtotal2: detail.Grade / detail.Credit,
- 
-        source: detail, 
+
+        source: detail,
         // หารผลรวม
       }));
 
-  
+
     }
   },
 
