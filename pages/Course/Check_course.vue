@@ -167,8 +167,8 @@
                         <th></th>
                         <th class="title text-center">{{ pageCredit }}</th>
                         <th class="title"></th>
-                        <th class="title text-center">{{ Totalpage }}</th>
-                        <th class="title text-center">{{ TotalAllpage.toFixed(2) }}</th>
+                        <th class="title text-center">{{ Totalmultiple }}</th>
+                        <th class="title text-center">{{ SumGPA.toFixed(2) }}</th>
                     </tr>
                 </template>
 
@@ -178,10 +178,10 @@
                         <th class="title text-right">ปกติ</th>
                         <th class="title"></th>
                         <th class="title text-right">สะสม</th>
-                        <th class="title text-center">{{ pageCredit }}</th>
+                        <th class="title text-center">{{ TotalCredit }}</th>
                         <th class="title"></th>
-                        <th class="title text-center">{{ Totalpage }}</th>
-                        <th class="title text-center">{{ TotalAllpage.toFixed(2) }}</th>
+                        <th class="title text-center">{{ TotalmultipleAll }}</th>
+                        <th class="title text-center">{{ SumGPAAll.toFixed(2) }}</th>
                     </tr>
                 </template>
 
@@ -340,12 +340,22 @@ export default {
     pageCredit() {
       return $array.sum(this.filteritems, 'Credit')
     },
+    TotalCredit() {
+      return $array.sum(this.items, 'Credit')
+    },
 // บรรทัดบนเป็น Filter
-    Totalpage() {
+    Totalmultiple() {
       return $array.sum(this.filteritems, 'subtotal')
+    },
+    TotalmultipleAll() {
+      return $array.sum(this.detailsWithSubTotal, 'subtotal')
+    },
+
+    SumGPA() {
+      return $array.sum(this.filteritems, 'subtotal2')
       
     },
-    TotalAllpage() {
+    SumGPAAll() {
       return $array.sum(this.detailsWithSubTotal, 'subtotal2')
       
     },
