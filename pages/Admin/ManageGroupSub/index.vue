@@ -80,7 +80,7 @@
                 <v-card>
                   <v-card-title class="headline"
                     >Confrim to delete
-                    {{ editedItem.SubjectNameTH }}
+                    {{ editedItem.NameGroup }}
                     ?</v-card-title
                   >
                   <v-card-actions>
@@ -136,7 +136,8 @@ export default {
       },
       { text: 'ชื่อกลุ่มสาระฯ', 
       value: 'NameGroup', 
-      class: 'tblHeader' },
+      class: 'tblHeader' 
+      },
 
       { text: 'หน่วยกิต', 
       value: 'TotalCredit', 
@@ -270,10 +271,6 @@ export default {
         await this.$axios.$delete(`/groupsub/${this.editedItem.GroupID}`);
         this.loadGrid();
         this.closeDelete();
-        this.$alert.showMessage({
-          content: "บันทึกข้อมูลเรียบร้อย",
-          type: "success"
-        });
 
       } catch (error) {
       }

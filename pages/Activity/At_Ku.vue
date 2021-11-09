@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-card-title></v-card-title>
+    <v-card-title>เพิ่มรายการกิจกรรม</v-card-title>
     <v-data-table
       :headers="headers"
       :items="items"
       :item-class="itemRowBackground"
       item-key="GradeID"
-      class="elevation-3"
+      class="elevation-1"
       sort-by=""
     >
 
@@ -117,10 +117,10 @@
                 </template>
 
       <template #[`item.actions`]="{ item }">
-        <v-icon color="orange" medium class="mr-2" @click="editItem(item)">
+        <v-icon color="orange" class="ma-2" @click="editItem(item)">
           mdi-pencil
         </v-icon>
-        <v-icon color="red" medium @click="deleteItem(item)">
+        <v-icon color="red" @click="deleteItem(item)">
           mdi-delete
         </v-icon>
       </template>
@@ -206,7 +206,7 @@ export default {
   }), // สิ้นสด data
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'Add Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'เพิ่มรายการกิจกรรม' : 'แก้ไขรายการกิจกรรม'
     },
     pageActivityCount() {
       return $array.sum(this.items, 'ActivityCount')

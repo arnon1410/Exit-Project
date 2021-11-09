@@ -20,7 +20,7 @@
         <v-list-item-icon>
           <v-icon>mdi-home</v-icon>
         </v-list-item-icon>
-        <v-list-item-title>Dashboard</v-list-item-title>
+        <v-list-item-title>หน้าหลัก</v-list-item-title>
       </v-list-item>
 
       <v-list-item v-else to='/Dashboard'>
@@ -28,7 +28,7 @@
         <v-list-item-icon>
           <v-icon>mdi-home</v-icon>
         </v-list-item-icon>
-        <v-list-item-title>Dashboard</v-list-item-title>
+        <v-list-item-title>หน้าหลัก</v-list-item-title>
       </v-list-item>
 
          <v-list-group
@@ -161,7 +161,7 @@
 <!--Footer-->
     <v-footer
       class=" teal darken-2"
-      :absolute="!fixed"
+      fixed
       dark
       app
     >

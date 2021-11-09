@@ -15,7 +15,7 @@
                           class="d-block ml-auto mr-auto ma-2">
                       </v-img>
                     <v-card-title class="justify-center">ผลการเรียนสะสม</v-card-title>
-                    <v-card-title class="justify-center">{{TotalAllpage.toFixed(2)}}</v-card-title>
+                    <v-card-title class="justify-center">{{Totalmultiple.toFixed(2) / pageCredit.toFixed(2)}}</v-card-title>
                     </v-card>
                     <v-card class="text-center ma-2" color="light-blue accent-3" width="240" height="240">
                       <v-img
@@ -26,8 +26,8 @@
                     <v-card-title class="justify-center">สถานภาพการศึกษา</v-card-title>
                     <v-card-title class="justify-center">
                       <div id="parent">
-                        <p v-if="TotalAllpage > 0">รอพินิจ</p>
-                        <p v-else>ปกติ</p>
+                        <p v-if="Totalmultiple.toFixed(2) / pageCredit.toFixed(2) > 2">ปกติ</p>
+                        <p v-else>รอพินิจ</p>
                       </div>
                     </v-card-title>
                     </v-card>
@@ -73,6 +73,7 @@ export default {
 
   layout: 'Aftermain',
   data: () => ({
+    title: 'STUDY PLAN AND STUDENT ACTIVITY CHECKING SYSTEM',
     dialog: false,
     dialogDelete: false,
     items: [],
@@ -124,7 +125,7 @@ export default {
       return $array.sum(this.detailsWithSubTotal, 'Credit')
     },
 // บรรทัดบนเป็น Filter
-    Totalpage() {
+    Totalmultiple() {
       return $array.sum(this.detailsWithSubTotal, 'subtotal')
 
     },

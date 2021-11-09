@@ -80,7 +80,7 @@
                 <v-card>
                   <v-card-title class="headline"
                     >Confrim to delete
-                    {{ editedItem.SubjectNameTH }}
+                    {{ editedItem.Name }}
                     ?</v-card-title
                   >
                   <v-card-actions>

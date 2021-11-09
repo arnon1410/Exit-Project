@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-card-title></v-card-title>
+    <v-card-title>ตรวจสอบผลการเรียน</v-card-title>
     <v-data-table
       :headers="headers"
       :items="filteritems"
       :item-class="itemRowBackground"
       item-key="GradeID"
-      class="elevation-3"
+      class="elevation-1"
       sort-by=""
     >
     <template #header>
@@ -79,7 +79,7 @@
                 <v-card-text>
                   <v-container>
                     <v-row>
-                      <v-col cols="12">
+                      <v-col cols="6">
                         <v-autocomplete
                           v-model="editedItem.SubjectID"
                           :rules="[rules.required]"
@@ -133,7 +133,7 @@
           <v-dialog v-model="dialogDelete" max-width="500px">
             <v-card>
               <v-card-title class="headline"
-                >Confirm to delete
+                >ยืนยันการลบข้อมูล
                 {{ editedItem.SubjectNameTH }}
                 ?</v-card-title
               >
@@ -151,14 +151,6 @@
           </v-dialog>
         </v-toolbar>
       </template>
-      <!-- <template #[`item.multiple`]>
-        <tr>
-          <td class="align-middle" v-effect="totalmultiple = Number(editedItem.Credit) * Number(editedItem.Credit)">
-          {{ totalmultiple.toFixed(2) }}
-        </td>
-        </tr>
-      </template> -->
-
                 <template slot="body.append">
                     <tr class="blue--text">
                         <th class="title">Totals</th>
@@ -168,30 +160,34 @@
                         <th class="title text-center">{{ pageCredit }}</th>
                         <th class="title"></th>
                         <th class="title text-center">{{ Totalmultiple }}</th>
-                        <th class="title text-center">{{ SumGPA.toFixed(2) }}</th>
+                        <th class="title text-center">{{ Totalmultiple.toFixed(2) / pageCredit.toFixed(2) }}</th>
                     </tr>
                 </template>
 
                 <template slot="body.append">
                     <tr class="green--text">
                         <th class="title">สถานภาพ</th>
-                        <th class="title text-right">ปกติ</th>
-                        <th class="title"></th>
+                       
+                        <th class="title text-center" v-if="Totalmultiple.toFixed(2) / pageCredit.toFixed(2) > 2">ปกติ</th>
+                        <th class="title text-center" v-else>รอพินิจ</th>
+   
                         <th class="title text-right">สะสม</th>
                         <th class="title text-center">{{ TotalCredit }}</th>
                         <th class="title"></th>
                         <th class="title text-center">{{ TotalmultipleAll }}</th>
-                        <th class="title text-center">{{ SumGPAAll.toFixed(2) }}</th>
+                        <th class="title text-center">{{ TotalmultipleAll.toFixed(2) / TotalCredit.toFixed(2)  }}</th>
                     </tr>
                 </template>
 
       <template #[`item.actions`]="{ item }">
-        <v-icon color="orange" medium class="mr-2" @click="editItem(item)">
+      <v-row>
+        <v-icon color="orange" medium @click="editItem(item)">
           mdi-pencil
         </v-icon>
         <v-icon color="red" medium @click="deleteItem(item)">
           mdi-delete
         </v-icon>
+      </v-row>
       </template>
     </v-data-table>
   </v-container>
@@ -278,7 +274,7 @@ export default {
     subjects: [],
     editedIndex: -1,
     editedItem: {
-      GradID: '',
+      GradeID: '',
       Grade: '',
       Term: '',
       Year: '',
@@ -289,7 +285,7 @@ export default {
       
     },
     defaultItem: {
-      GradID: '',
+      GradeID: '',
       Grade: '',
       Term: '',
       Year: '',
@@ -319,7 +315,7 @@ export default {
   }), // สิ้นสด data
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'Add Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'เพิ่มรายวิชา' : 'แก้ไขรายวิชา'
     },
 
     filteritems() {
@@ -350,7 +346,6 @@ export default {
     TotalmultipleAll() {
       return $array.sum(this.detailsWithSubTotal, 'subtotal')
     },
-
     SumGPA() {
       return $array.sum(this.filteritems, 'subtotal2')
       
@@ -365,7 +360,7 @@ export default {
         subtotal: detail.Grade * detail.Credit,
         subtotal2: detail.Grade / detail.Credit,
         source: detail, 
-
+        // หารผลรวม
       }));
 
   
@@ -388,7 +383,7 @@ export default {
 
     async loadGrid() {
       try {
-        this.items = await this.$axios.$get(`/grade/ByUserID/${this.$auth.user.StudentID}`);
+        this.items = await this.$axios.$get('/grade')
         if (this.items) {
           this.items.forEach((x) => {
             x.SubjectID = x.subject.SubjectID
@@ -397,7 +392,7 @@ export default {
             x.Credit = x.subject.Credit
           })
         }
-console.log(this.items)
+
         this.subjects = await this.$axios.$get('/subject')
         this.subjects.forEach(x => {
           x.ShowText = x.SubjectID + ' - ' + x.SubjectNameTH
@@ -417,10 +412,11 @@ console.log(this.items)
     columnValueList(val) {
 				return this.items.map((d) => d[val]);
 		},
-
+    
     itemRowBackground(item) {
       return (
-        // this.items.indexOf(item) % 2 === 0 ? 'style-1' : 'style-2',
+        // eslint-disable-next-line no-sequences
+        this.items.indexOf(item) % 2 === 0 ? 'style-1' : 'style-2',
         this.subjects.indexOf(item) % 2 === 0 ? 'style-1' : 'style-2'
       )
     },
@@ -428,20 +424,16 @@ console.log(this.items)
     editItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
+
       this.Credit = item.Credit
       this.dialog = true
     },
 
-    deleteItem(arr,item) {
+    deleteItem(item) {
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
       
-    },
-
-    deleteItemConfirm() {
-      this.items.splice(this.editedIndex, 1)
-      this.closeDelete()
     },
 
     close() {
@@ -450,7 +442,11 @@ console.log(this.items)
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       })
-      this.resetForm()
+
+    },
+    closeConfirm() {
+      this.dialog = false;
+      
     },
 
     closeDelete() {
@@ -493,9 +489,6 @@ console.log(this.items)
       } catch (error) {
         console.error(error)
       }
-    },
-    resetForm() {
-      this.$refs.form.reset()
     },
   },
 }

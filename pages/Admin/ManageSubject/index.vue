@@ -361,20 +361,13 @@ export default {
         );
             this.loadGrid();
             this.close();
-            this.$alert.showMessage({
-              content: "บันทึกข้อมูลเรียบร้อย",
-              type: "success"
-            });
         } 
         else {
           await this.$axios.$post(`/subject`, this.editedItem)
           };
             this.loadGrid();
             this.closeConfirm2();
-            this.$alert.showMessage({
-              content: 'บันทึกข้อมูลเรียบร้อย',
-              type: 'success',
-            });
+
       } catch (error) {
         console.error(error)
       }
